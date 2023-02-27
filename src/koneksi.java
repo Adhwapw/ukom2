@@ -24,7 +24,7 @@ public class koneksi {
         } catch (ClassNotFoundException ex) {
             System.out.println("sistem tidak berhasil konek");
         }
-        String url = "jdbc:mysql://localhost:3306/db_spp2";
+        String url = "jdbc:mysql://localhost:3306/db_spp2_copy";
         try {
             Koneksii = DriverManager.getConnection(url, "root", "");
             System.out.println("Berhasil koneksi Database");

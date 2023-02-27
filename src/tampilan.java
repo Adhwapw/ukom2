@@ -402,8 +402,10 @@ public class tampilan extends javax.swing.JFrame {
     public void tablespp() {
         DefaultTableModel tbspp = new DefaultTableModel();
         tbspp.addColumn("Id SPP");
-        tbspp.addColumn("Tahun");
-        tbspp.addColumn("Nominal");
+        tbspp.addColumn("Tahun Ajaran");
+        tbspp.addColumn("Nominal Perbulan");
+        tbspp.addColumn("Semester");
+        tbspp.addColumn("Total Nominal");
 
         try {
             String sql = "SELECT * FROM spp";
@@ -413,8 +415,12 @@ public class tampilan extends javax.swing.JFrame {
             while (rs.next()) {
                 tbspp.addRow(new Object[]{
                     rs.getString("Id_spp"),
-                    rs.getString("tahun"),
-                    rs.getString("nominal")});
+                    rs.getString("tahun_ajaran"),
+                    rs.getString("nominal_perbulan"),
+                    rs.getString("semester"),
+                    rs.getString("total_nominal_semester")
+                });
+                
                 tabelspp.setModel(tbspp);
             }
 //            JOptionPane.showMessageDialog(null, "Koneksi berhasil");
@@ -433,6 +439,7 @@ public class tampilan extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
         tablespp();
+        bsimpanspp.setVisible(true);
     }
 
     /**
@@ -579,8 +586,9 @@ public class tampilan extends javax.swing.JFrame {
         jScrollPane14 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
+        asli = new javax.swing.JLabel();
+        hover = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
         panel1 = new java.awt.Panel();
         siswa = new javax.swing.JLabel();
         bpetugas = new javax.swing.JLabel();
@@ -667,9 +675,11 @@ public class tampilan extends javax.swing.JFrame {
         tnominal = new javax.swing.JTextField();
         ttahun = new javax.swing.JTextField();
         tidspp = new javax.swing.JTextField();
+        totalnom = new javax.swing.JTextField();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
+        cgannep = new javax.swing.JComboBox<>();
         caridataspp = new javax.swing.JTextField();
         backspp = new javax.swing.JLabel();
         Ppembayaran = new javax.swing.JPanel();
@@ -695,6 +705,8 @@ public class tampilan extends javax.swing.JFrame {
         namasiswa3 = new javax.swing.JLabel();
         namasiswa4 = new javax.swing.JLabel();
         namasiswa5 = new javax.swing.JLabel();
+        jScrollPane16 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
         backpembayaran = new javax.swing.JLabel();
         Pkelas = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -2088,38 +2100,44 @@ public class tampilan extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(45, 205, 223));
+        jPanel1.setLayout(null);
+
+        asli.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        asli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-close-window-30 (1).png"))); // NOI18N
+        asli.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        asli.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                asliMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                asliMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                asliMouseExited(evt);
+            }
+        });
+        jPanel1.add(asli);
+        asli.setBounds(1310, 0, 60, 60);
+
+        hover.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        hover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-close-window-30 (2).png"))); // NOI18N
+        hover.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        hover.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hoverMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                hoverMouseEntered(evt);
+            }
+        });
+        jPanel1.add(hover);
+        hover.setBounds(1310, -2, 60, 60);
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("APLIKASI PEMBAYARAN SPP");
-
-        jLabel21.setText("jLabel21");
-        jLabel21.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel21MouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1010, Short.MAX_VALUE)
-                .addComponent(jLabel21)
-                .addGap(16, 16, 16))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
-        );
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backhead.png"))); // NOI18N
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(0, 0, 1370, 60);
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 60));
 
@@ -2132,9 +2150,16 @@ public class tampilan extends javax.swing.JFrame {
         siswa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         siswa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-student-25.png"))); // NOI18N
         siswa.setText("MASTER SISWA");
+        siswa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         siswa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 siswaMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                siswaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                siswaMouseExited(evt);
             }
         });
         panel1.add(siswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 140, 30));
@@ -2145,6 +2170,7 @@ public class tampilan extends javax.swing.JFrame {
         bpetugas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bpetugas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-worker-20.png"))); // NOI18N
         bpetugas.setText("PETUGAS");
+        bpetugas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bpetugas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bpetugasMouseClicked(evt);
@@ -2170,9 +2196,19 @@ public class tampilan extends javax.swing.JFrame {
         bspp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bspp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-insert-money-25.png"))); // NOI18N
         bspp.setText("SPP");
+        bspp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bspp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bsppMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                bsppMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                bsppMouseExited(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bsppMouseReleased(evt);
             }
         });
         panel1.add(bspp, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 120, 40));
@@ -2183,6 +2219,7 @@ public class tampilan extends javax.swing.JFrame {
         bpembayaran.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bpembayaran.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-pay-25.png"))); // NOI18N
         bpembayaran.setText("PEMBAYARAN");
+        bpembayaran.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bpembayaran.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bpembayaranMouseClicked(evt);
@@ -2196,6 +2233,7 @@ public class tampilan extends javax.swing.JFrame {
         bkelas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bkelas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-classroom-25.png"))); // NOI18N
         bkelas.setText("MASTER KELAS");
+        bkelas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bkelas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bkelasMouseClicked(evt);
@@ -2203,10 +2241,10 @@ public class tampilan extends javax.swing.JFrame {
         });
         panel1.add(bkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 448, 150, 30));
 
-        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Selamat Datang");
-        panel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 93, 13));
+        panel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 20, 110, 50));
 
         namauser.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         namauser.setForeground(new java.awt.Color(255, 255, 255));
@@ -2218,9 +2256,19 @@ public class tampilan extends javax.swing.JFrame {
         bkeluar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bkeluar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-classroom-25.png"))); // NOI18N
         bkeluar.setText("LOG OUT");
+        bkeluar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bkeluar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bkeluarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                bkeluarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                bkeluarMouseExited(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bkeluarMouseReleased(evt);
             }
         });
         panel1.add(bkeluar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, 30));
@@ -2229,9 +2277,16 @@ public class tampilan extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(255, 255, 255));
         jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-home-page-25.png"))); // NOI18N
         jLabel23.setText("HOME");
+        jLabel23.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel23.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel23MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel23MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel23MouseExited(evt);
             }
         });
         panel1.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 90, 30));
@@ -2254,7 +2309,7 @@ public class tampilan extends javax.swing.JFrame {
                 jLabel13MouseClicked(evt);
             }
         });
-        Phome.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 10, 40, 40));
+        Phome.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 20, 40, 40));
 
         greating.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         Phome.add(greating, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 478, 80));
@@ -2861,6 +2916,7 @@ public class tampilan extends javax.swing.JFrame {
         beditspp.setBounds(570, 620, 90, 40);
 
         bsimpanspp.setText("Simpan");
+        bsimpanspp.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         bsimpanspp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bsimpansppMouseClicked(evt);
@@ -2911,6 +2967,19 @@ public class tampilan extends javax.swing.JFrame {
         Psppp.add(tidspp);
         tidspp.setBounds(610, 460, 170, 40);
 
+        totalnom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                totalnomActionPerformed(evt);
+            }
+        });
+        totalnom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                totalnomKeyReleased(evt);
+            }
+        });
+        Psppp.add(totalnom);
+        totalnom.setBounds(850, 520, 170, 40);
+
         jLabel34.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel34.setText("ID SPP");
         Psppp.add(jLabel34);
@@ -2925,6 +2994,10 @@ public class tampilan extends javax.swing.JFrame {
         jLabel36.setText("Nominal");
         Psppp.add(jLabel36);
         jLabel36.setBounds(430, 570, 56, 20);
+
+        cgannep.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--pilih--", "ganjil", "genap" }));
+        Psppp.add(cgannep);
+        cgannep.setBounds(850, 470, 110, 22);
 
         caridataspp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2978,7 +3051,7 @@ public class tampilan extends javax.swing.JFrame {
         });
         jScrollPane15.setViewportView(tabelsiswapembayaran);
 
-        Ppembayaran.add(jScrollPane15, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 100, -1, 402));
+        Ppembayaran.add(jScrollPane15, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 100, -1, 140));
 
         jLabel76.setText("NO. Transaksi");
         Ppembayaran.add(jLabel76, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 90, 20));
@@ -3020,6 +3093,21 @@ public class tampilan extends javax.swing.JFrame {
 
         namasiswa5.setText("Jumlah Bayar");
         Ppembayaran.add(namasiswa5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 90, 20));
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane16.setViewportView(jTable3);
+
+        Ppembayaran.add(jScrollPane16, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 330, -1, 240));
 
         backpembayaran.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backbuatformpembayaran.png"))); // NOI18N
         Ppembayaran.add(backpembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 930, -1));
@@ -3339,22 +3427,23 @@ public class tampilan extends javax.swing.JFrame {
         mainpanel.add(Psppp);
         mainpanel.repaint();
         mainpanel.revalidate();
+
     }//GEN-LAST:event_bsppMouseClicked
 
     private void bpetugasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bpetugasMouseEntered
-        bpetugas.setForeground(new Color(128, 128, 128));
+        bpetugas.setForeground(Color.LIGHT_GRAY);
     }//GEN-LAST:event_bpetugasMouseEntered
 
     private void bpetugasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bpetugasMouseExited
-        bpetugas.setForeground(Color.LIGHT_GRAY);
+        bpetugas.setForeground(new Color(255, 255, 255));
     }//GEN-LAST:event_bpetugasMouseExited
 
     private void bpetugasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bpetugasMousePressed
-        bpetugas.setForeground(Color.GRAY);
+        bpetugas.setForeground(Color.LIGHT_GRAY);
     }//GEN-LAST:event_bpetugasMousePressed
 
     private void bpetugasMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bpetugasMouseReleased
-        bpetugas.setForeground(Color.LIGHT_GRAY);
+        bpetugas.setForeground(new Color(255, 255, 255));
     }//GEN-LAST:event_bpetugasMouseReleased
 
     private void bpetugasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bpetugasMouseClicked
@@ -3389,8 +3478,12 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_bkelasMouseClicked
 
     private void bkeluarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bkeluarMouseClicked
-        new tampilan_awal().setVisible(true);
-        this.dispose();
+        int p = JOptionPane.showConfirmDialog(null, "Apaakah Anda ingin Keluar ?", "LogOut", JOptionPane.YES_NO_OPTION);
+        if (p == 0) {
+            new tampilan_awal().setVisible(true);
+            this.dispose();
+        }
+
     }//GEN-LAST:event_bkeluarMouseClicked
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
@@ -3469,9 +3562,13 @@ public class tampilan extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnhapussisActionPerformed
 
-    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
+    private void asliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_asliMouseClicked
         System.exit(0);
-    }//GEN-LAST:event_jLabel21MouseClicked
+        asli.setVisible(false);
+        asli.setEnabled(false);
+        hover.setEnabled(false);
+        hover.setEnabled(false);
+    }//GEN-LAST:event_asliMouseClicked
 
     private void tidkelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tidkelasActionPerformed
 //        tidkelas.addKeyListener(new KeyAdapter() {
@@ -3687,7 +3784,7 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_ttahunActionPerformed
 
     private void tnominalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnominalActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_tnominalActionPerformed
 
     private void tabelsppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelsppMouseClicked
@@ -3698,6 +3795,10 @@ public class tampilan extends javax.swing.JFrame {
         ttahun.setText(nama);
         String alamat = tabelspp.getValueAt(baris, 2).toString();
         tnominal.setText(alamat);
+        String semester = tabelspp.getValueAt(baris, 3).toString();
+        cgannep.setSelectedItem(semester);
+        String total = tabelspp.getValueAt(baris, 4).toString();
+        totalnom.setText(total);
 
         bsimpanspp.setVisible(false);
 
@@ -3740,7 +3841,10 @@ public class tampilan extends javax.swing.JFrame {
         try {
             String sql = "INSERT INTO spp VALUES ('" + tidspp.getText()
                     + "','" + ttahun.getText()
-                    + "','" + tnominal.getText() + "')";
+                    + "','" + tnominal.getText() 
+                    + "','" + cgannep.getSelectedItem()
+                    + "','" + totalnom.getText()
+                    + "')";
 //            Connection con = (Connection) koneksi.getConnection();
             PreparedStatement pst = con.prepareStatement(sql);
             pst.execute();
@@ -3748,6 +3852,8 @@ public class tampilan extends javax.swing.JFrame {
             tidspp.setText("");
             ttahun.setText("");
             tnominal.setText("");
+            cgannep.setSelectedItem("--pilih--");
+            totalnom.setText("");
 
             DefaultTableModel model = (DefaultTableModel) tabelspp.getModel();
             model.setRowCount(0);
@@ -4132,6 +4238,7 @@ public class tampilan extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             System.out.println(e);
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
 
 //        btnSimpan.setEnabled(true);
@@ -4174,7 +4281,7 @@ public class tampilan extends javax.swing.JFrame {
             String tahun = ttahun.getText();
             String nominal = tnominal.getText();
 
-            String sql = "update spp set tahun='" + tahun + "', nominal='" + nominal + "' where id_spp='" + tabelspp.getValueAt(tabelspp.getSelectedRow(), 0) + "'";
+            String sql = "update spp set tahun_ajaran='" + tahun + "', nominal_perbulan='" + nominal +"', semester ='" + cgannep.getSelectedItem()+"', total_nominal_semester='" + totalnom.getText()  +"' where id_spp='" + tidspp.getText() + "'";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.execute();
             JOptionPane.showMessageDialog(this, "Data Berhasil Di Edit");
@@ -4267,13 +4374,13 @@ public class tampilan extends javax.swing.JFrame {
 
     private void ttahunKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ttahunKeyReleased
         String text = ttahun.getText();
-        if (text.length() > 4) {
-            JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 4.");
-            String potongkarakter = text.substring(0, 4);
+        if (text.length() > 9) {
+            JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 9.");
+            String potongkarakter = text.substring(0, 9);
             ttahun.setText(potongkarakter);
         }
 
-        String regex = "^[0-9]+$";
+        String regex = "^[0-9/]+$";
         String input = ttahun.getText();
         if (!input.matches(regex)) {
             JOptionPane.showMessageDialog(null, "Harus berupa Angka.");
@@ -4283,6 +4390,20 @@ public class tampilan extends javax.swing.JFrame {
 
     private void tnominalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tnominalKeyReleased
         String text = tnominal.getText();
+        try {
+        // mengambil nilai dari textfield pertama
+        int angka = Integer.parseInt(tnominal.getText());
+        
+        // melakukan perhitungan
+        int hasil = angka * 6;
+        
+        // menampilkan hasil perhitungan di textfield kedua
+        totalnom.setText(Integer.toString(hasil));
+        
+    } catch (NumberFormatException e) {
+        // jika input bukan angka, tampilkan pesan error
+        totalnom.setText("Error: Masukkan angka");
+    }
         if (text.length() > 7) {
             JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 7.");
             String potongkarakter = text.substring(0, 7);
@@ -4379,7 +4500,7 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_tnamasiswasKeyReleased
 
     private void ttelpKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ttelpKeyReleased
-String text = ttelp.getText();
+        String text = ttelp.getText();
         if (text.length() > 13) {
             JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 13.");
             String potongkarakter = text.substring(0, 13);
@@ -4393,6 +4514,76 @@ String text = ttelp.getText();
             ttelp.setText("");
         }
     }//GEN-LAST:event_ttelpKeyReleased
+
+    private void hoverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hoverMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_hoverMouseClicked
+
+    private void asliMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_asliMouseEntered
+        asli.setVisible(false);
+        asli.setEnabled(false);
+        hover.setEnabled(true);
+//        hover.setEnabled(false);
+    }//GEN-LAST:event_asliMouseEntered
+
+    private void asliMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_asliMouseExited
+        asli.setVisible(true);
+        asli.setEnabled(true);
+        hover.setEnabled(false);
+        hover.setEnabled(false);
+    }//GEN-LAST:event_asliMouseExited
+
+    private void bsppMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bsppMouseReleased
+        bspp.setForeground(Color.LIGHT_GRAY);
+    }//GEN-LAST:event_bsppMouseReleased
+
+    private void bsppMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bsppMouseEntered
+        bspp.setForeground(new Color(204, 255, 204)); // mengubah warna foreground label menjadi merah
+    }//GEN-LAST:event_bsppMouseEntered
+
+    private void bsppMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bsppMouseExited
+        bspp.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_bsppMouseExited
+
+    private void bkeluarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bkeluarMouseEntered
+        bkeluar.setForeground(new Color(255, 77, 77));
+    }//GEN-LAST:event_bkeluarMouseEntered
+
+    private void bkeluarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bkeluarMouseExited
+        bkeluar.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_bkeluarMouseExited
+
+    private void bkeluarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bkeluarMouseReleased
+        bkeluar.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_bkeluarMouseReleased
+
+    private void hoverMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hoverMouseEntered
+        hover.setBackground(new Color(255, 255, 255, 128));
+    }//GEN-LAST:event_hoverMouseEntered
+
+    private void siswaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_siswaMouseEntered
+        siswa.setForeground(new Color(204, 204, 204));
+    }//GEN-LAST:event_siswaMouseEntered
+
+    private void jLabel23MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel23MouseEntered
+        jLabel23.setForeground(new Color(204, 204, 204));
+    }//GEN-LAST:event_jLabel23MouseEntered
+
+    private void jLabel23MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel23MouseExited
+        jLabel23.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_jLabel23MouseExited
+
+    private void siswaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_siswaMouseExited
+        siswa.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_siswaMouseExited
+
+    private void totalnomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalnomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_totalnomActionPerformed
+
+    private void totalnomKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_totalnomKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_totalnomKeyReleased
 
     /**
      * @param args the command line arguments
@@ -4442,6 +4633,7 @@ String text = ttelp.getText();
     public javax.swing.JPanel Psiswa1;
     private javax.swing.JPanel Psppp;
     private javax.swing.JPanel Psppp1;
+    private javax.swing.JLabel asli;
     private javax.swing.JLabel background;
     private javax.swing.JLabel backpembayaran;
     private javax.swing.JLabel backspp;
@@ -4488,6 +4680,7 @@ String text = ttelp.getText();
     private javax.swing.JTextField cari;
     private javax.swing.JTextField caridataspp;
     private javax.swing.JTextField caripetu;
+    private javax.swing.JComboBox<String> cgannep;
     private javax.swing.JComboBox<String> comboidkelas;
     private javax.swing.JComboBox<String> comboidkelas1;
     private javax.swing.JComboBox<String> comboidspp;
@@ -4496,6 +4689,7 @@ String text = ttelp.getText();
     private javax.swing.JLabel distopetugas;
     public javax.swing.JLabel greating;
     public javax.swing.JLabel greating1;
+    private javax.swing.JLabel hover;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -4516,7 +4710,6 @@ String text = ttelp.getText();
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
@@ -4614,6 +4807,7 @@ String text = ttelp.getText();
     private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane15;
+    private javax.swing.JScrollPane jScrollPane16;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -4624,6 +4818,7 @@ String text = ttelp.getText();
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField6;
@@ -4711,6 +4906,7 @@ String text = ttelp.getText();
     public javax.swing.JTextField tnissiswa1;
     private javax.swing.JTextField tnominal;
     private javax.swing.JTextField tnominal1;
+    private javax.swing.JTextField totalnom;
     private javax.swing.JPasswordField tpasspetu;
     private javax.swing.JPasswordField tpasspetu1;
     private javax.swing.JTextField ttahun;
@@ -4746,6 +4942,7 @@ String text = ttelp.getText();
         bsimpanspp.setEnabled(true);
         tidspp.setEnabled(true);
         tidspp.setText("");
+        bsimpanspp.setVisible(true);
     }
 // reset formkelas
 

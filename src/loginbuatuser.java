@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.DefaultListCellRenderer;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -37,7 +41,15 @@ public class loginbuatuser extends javax.swing.JFrame {
 
     public loginbuatuser() {
         initComponents();
-//        this.setBackground(new Color(0, 0, 0, 0));
+        clevel.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public void paint(Graphics g) {
+                setBackground(Color.WHITE);
+                setForeground(Color.BLACK);
+                super.paint(g);
+            }
+        });
+
     }
 
     /**
@@ -51,13 +63,15 @@ public class loginbuatuser extends javax.swing.JFrame {
 
         jPasswordField1 = new javax.swing.JPasswordField();
         tombol = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        asli = new javax.swing.JLabel();
         tuser1 = new javax.swing.JTextField();
         salah = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
         tpass = new javax.swing.JPasswordField();
         clevel = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
+        hover = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         jPasswordField1.setText("jPasswordField1");
@@ -66,6 +80,7 @@ public class loginbuatuser extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        tombol.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tombol.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tombolMouseClicked(evt);
@@ -73,22 +88,38 @@ public class loginbuatuser extends javax.swing.JFrame {
         });
         getContentPane().add(tombol, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, 160, 30));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-close-window-30.png"))); // NOI18N
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        asli.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        asli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-close-window-30.png"))); // NOI18N
+        asli.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
+                asliMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                asliMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                asliMouseExited(evt);
             }
         });
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, -1, -1));
+        getContentPane().add(asli, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, 50, 50));
 
         tuser1.setBackground(new java.awt.Color(255, 255, 255, 0));
+        tuser1.setText("enter username");
         tuser1.setBorder(null);
+        tuser1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tuser1FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tuser1FocusLost(evt);
+            }
+        });
         tuser1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tuser1ActionPerformed(evt);
             }
         });
-        getContentPane().add(tuser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 180, 30));
+        getContentPane().add(tuser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 170, 30));
 
         salah.setForeground(new java.awt.Color(255, 51, 51));
         getContentPane().add(salah, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 150, 20));
@@ -100,7 +131,7 @@ public class loginbuatuser extends javax.swing.JFrame {
                 jCheckBox1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, 100, -1));
+        getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, 110, -1));
 
         tpass.setBackground(new java.awt.Color(255, 255, 255, 0));
         tpass.setBorder(null);
@@ -110,7 +141,7 @@ public class loginbuatuser extends javax.swing.JFrame {
                 tpassActionPerformed(evt);
             }
         });
-        getContentPane().add(tpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 180, 30));
+        getContentPane().add(tpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 170, 30));
 
         clevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih", "admin", "petugas" }));
         getContentPane().add(clevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 180, -1));
@@ -124,6 +155,34 @@ public class loginbuatuser extends javax.swing.JFrame {
         });
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
+        hover.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        hover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-close-window-30 (2).png"))); // NOI18N
+        hover.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hoverMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                hoverMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                hoverMouseExited(evt);
+            }
+        });
+        getContentPane().add(hover, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, 50, 50));
+
+        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Lupa password");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel2MouseExited(evt);
+            }
+        });
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 360, 90, 30));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/background buat siswa.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 402));
 
@@ -135,9 +194,9 @@ public class loginbuatuser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tuser1ActionPerformed
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+    private void asliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_asliMouseClicked
         this.dispose();
-    }//GEN-LAST:event_jLabel2MouseClicked
+    }//GEN-LAST:event_asliMouseClicked
 
     private void tombolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tombolMouseClicked
         String level = clevel.getSelectedItem().toString();
@@ -217,6 +276,54 @@ public class loginbuatuser extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel3MouseClicked
 
+    private void tuser1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tuser1FocusGained
+        if (tuser1.getText().equals("enter username")) {
+            tuser1.setText("");
+        }
+    }//GEN-LAST:event_tuser1FocusGained
+
+    private void tuser1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tuser1FocusLost
+        if (tuser1.getText().equals("")) {
+            tuser1.setText("enter username");
+        }
+    }//GEN-LAST:event_tuser1FocusLost
+
+    private void hoverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hoverMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_hoverMouseClicked
+
+    private void asliMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_asliMouseEntered
+        asli.setVisible(false);
+        asli.setEnabled(false);
+        hover.setEnabled(true);
+        hover.setOpaque(true);
+//        hover.setBackground(Color.lightGray);
+    }//GEN-LAST:event_asliMouseEntered
+
+    private void hoverMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hoverMouseEntered
+
+    }//GEN-LAST:event_hoverMouseEntered
+
+    private void hoverMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hoverMouseExited
+
+    }//GEN-LAST:event_hoverMouseExited
+
+    private void asliMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_asliMouseExited
+        asli.setVisible(true);
+        asli.setEnabled(true);
+        hover.setEnabled(true);
+        hover.setBackground(new Color(217, 217, 217, 128)); // mengatur latar belakang label dengan transparansi 50%
+        hover.setOpaque(false);
+    }//GEN-LAST:event_asliMouseExited
+
+    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
+       jLabel2.setForeground(new Color(217, 217, 217, 128));
+    }//GEN-LAST:event_jLabel2MouseEntered
+
+    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
+        jLabel2.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_jLabel2MouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -253,7 +360,9 @@ public class loginbuatuser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel asli;
     private javax.swing.JComboBox<String> clevel;
+    private javax.swing.JLabel hover;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

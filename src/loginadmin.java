@@ -29,8 +29,8 @@ public class loginadmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel9 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -46,6 +46,15 @@ public class loginadmin extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(null);
 
+        jTextField1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(51, 51, 255)));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField1);
+        jTextField1.setBounds(0, 0, 64, 18);
+
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/background form login.png"))); // NOI18N
         jLabel9.setText("jLabel9");
         jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -55,15 +64,6 @@ public class loginadmin extends javax.swing.JFrame {
         });
         getContentPane().add(jLabel9);
         jLabel9.setBounds(0, 0, 761, 400);
-
-        jTextField1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(51, 51, 255)));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTextField1);
-        jTextField1.setBounds(0, 0, 64, 18);
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
 

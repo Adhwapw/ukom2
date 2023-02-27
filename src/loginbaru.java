@@ -102,6 +102,7 @@ public class loginbaru extends javax.swing.JFrame {
         });
         getContentPane().add(salahuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 160, 20));
 
+        simpan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         simpan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 simpanMouseClicked(evt);

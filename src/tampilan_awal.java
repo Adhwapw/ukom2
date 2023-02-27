@@ -73,6 +73,9 @@ public class tampilan_awal extends javax.swing.JFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 SISWA1MouseEntered(evt);
             }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                SISWA1MouseExited(evt);
+            }
         });
         getContentPane().add(SISWA1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 130, 40));
 
@@ -84,11 +87,11 @@ public class tampilan_awal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SISWAMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SISWAMouseEntered
-        SISWA.setBackground(new Color(128, 128, 128));
+        SISWA.setForeground(new Color(102, 204, 153));
     }//GEN-LAST:event_SISWAMouseEntered
 
     private void SISWA1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SISWA1MouseEntered
-        // TODO add your handling code here:
+        SISWA1.setForeground(new Color(102, 204, 153));
     }//GEN-LAST:event_SISWA1MouseEntered
 
     private void SISWAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SISWAMouseClicked
@@ -102,8 +105,12 @@ public class tampilan_awal extends javax.swing.JFrame {
     }//GEN-LAST:event_SISWA1MouseClicked
 
     private void SISWAMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SISWAMouseExited
-        
+        SISWA.setForeground(new Color(255, 255, 255));
     }//GEN-LAST:event_SISWAMouseExited
+
+    private void SISWA1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SISWA1MouseExited
+      SISWA1.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_SISWA1MouseExited
 
     /**
      * @param args the command line arguments
