@@ -7,10 +7,13 @@ import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.interfaces.PBEKey;
@@ -165,7 +168,7 @@ public class tampilan extends javax.swing.JFrame {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                comboidspp.addItem(rs.getString("tahun"));
+                comboidspp.addItem(rs.getString("tahun_ajaran"));
 
             }
 
@@ -248,10 +251,8 @@ public class tampilan extends javax.swing.JFrame {
         String[] judul = {"NISN", "NIS", "Nama", "Kelas", "Alamat", "Telepon", "Tahun"};
         DefaultTableModel model = new DefaultTableModel(judul, 0);
         tabelsiswapembayaran.setModel(model);
-//        String sql = "SELECT siswa.*, kelas.nama_kelas, spp.tahun from siswa INNER JOIN kelas USING(id_kelas) INNER JOIN spp Using(id_spp) where nisn like '%"+cari.getText()+"%' or nama like '%"+cari.getText()+"%'";
-
         try {
-            String sql = "SELECT siswa.*, kelas.nama_kelas, spp.tahun from siswa INNER JOIN kelas USING(Id_kelas) INNER JOIN spp Using(Id_spp) where nisn like '%" + cari.getText() + "%' or nama like '%" + cari.getText() + "%'";;
+            String sql = "SELECT siswa.*, kelas.nama_kelas, spp.tahun_ajaran from siswa INNER JOIN kelas USING(Id_kelas) INNER JOIN spp Using(Id_spp) where nisn like '%" + cari.getText() + "%' or nama like '%" + cari.getText() + "%'";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             rs = con.createStatement().executeQuery(sql);
@@ -263,13 +264,14 @@ public class tampilan extends javax.swing.JFrame {
                 String kelas = rs.getString("nama_kelas");
                 String alamat = rs.getString("alamat");
                 String telp = rs.getString("no_telp");
-                String tahun = rs.getString("tahun");
+                String tahun = rs.getString("tahun_ajaran");
 
                 String[] data = {nisn, nis, nama, kelas, alamat, telp, tahun};
                 model.addRow(data);
             }
         } catch (Exception e) {
             System.out.println(e);
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
 
     }
@@ -420,7 +422,7 @@ public class tampilan extends javax.swing.JFrame {
                     rs.getString("semester"),
                     rs.getString("total_nominal_semester")
                 });
-                
+
                 tabelspp.setModel(tbspp);
             }
 //            JOptionPane.showMessageDialog(null, "Koneksi berhasil");
@@ -2470,6 +2472,7 @@ public class tampilan extends javax.swing.JFrame {
         Psiswa.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 49, -1));
 
         comboidkelas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Pilih--" }));
+        comboidkelas.setFocusable(false);
         comboidkelas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboidkelasActionPerformed(evt);
@@ -2665,6 +2668,11 @@ public class tampilan extends javax.swing.JFrame {
 
         boxlevel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         boxlevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "pilih", "admin", "petugas" }));
+        boxlevel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxlevelActionPerformed(evt);
+            }
+        });
 
         bsimpanpetu.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         bsimpanpetu.setText("Simpan");
@@ -3543,22 +3551,69 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_bsimpansiswaActionPerformed
 
     private void btneditsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditsisActionPerformed
+        String nis = tnissiswa.getText();
+        String nama = tnamasiswas.getText();
+        String alamat = talamatsiswa.getText();
+        String telp = ttelesiswa.getText();
+        String nisn = tnisnsiswa.getText();
 
-    }//GEN-LAST:event_btneditsisActionPerformed
-
-    private void btnhapussisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapussisActionPerformed
-        int p = JOptionPane.showConfirmDialog(null, "Apaakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
-        if (p == 0) {
+        if (nis.isEmpty() || nama.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Data belum lengkap, silahkan lengkapi terlebih dahulu");
+        } else {
             try {
-                String sql = "delete from siswa where nisn ='" + tnisnsiswa.getText() + "'";
-                PreparedStatement pst = con.prepareStatement(sql);
-                pst.execute();
-                JOptionPane.showMessageDialog(null, "berhasil");
+                // kode untuk eksekusi query SQL
+                String valueKelas = comboidkelas.getSelectedItem().toString();
+                String valueTahun = comboidspp.getSelectedItem().toString();
+
+                ResultSet rsKelas = con.createStatement().executeQuery("select id_kelas from kelas where nama_kelas='" + valueKelas + "'");
+                ResultSet rsTahun = con.createStatement().executeQuery("select id_spp from spp where tahun_ajaran='" + valueTahun + "'");
+
+                while (rsKelas.next()) {
+                    kelas = rsKelas.getString("id_kelas");
+                }
+                while (rsTahun.next()) {
+                    spp = rsTahun.getString("id_spp");
+                }
+                con.createStatement().executeUpdate("update siswa set nis='" + nis + "', nama='" + nama + "',id_kelas='" + kelas + "', alamat='" + alamat + "', no_telp='" + telp + "', id_spp='" + spp + "' where nisn='" + nisn + "'");
+                JOptionPane.showMessageDialog(this, "Data Berhasil Di Edit");
+
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "gagal");
+                System.out.println(e);
             }
             resetFormsiswa();
         }
+    }//GEN-LAST:event_btneditsisActionPerformed
+
+    private void btnhapussisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapussisActionPerformed
+//        int p = JOptionPane.showConfirmDialog(null, "Apakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
+//        if (p == 0) {
+//            try {
+//                String sql = "delete from siswa where nisn ='" + tnisnsiswa.getText() + "'";
+//                PreparedStatement pst = con.prepareStatement(sql);
+//                pst.execute();
+//                JOptionPane.showMessageDialog(null, "berhasil");
+//            } catch (Exception e) {
+//                JOptionPane.showMessageDialog(null, "gagal");
+//            }
+//            resetFormsiswa();
+//        }
+if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasiswas.getText().equals("") || comboidkelas.getSelectedItem().equals("--pilih--") || talamatsiswa.getText().equals("") || ttelesiswa.getText().equals("") || comboidspp.getSelectedItem().equals("--pilih--")) {
+    JOptionPane.showMessageDialog(null, "Proses hapus tidak bisa dijalankan");
+} else {
+    int p = JOptionPane.showConfirmDialog(null, "Apakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
+    if (p == 0) {
+        try {
+            String sql = "delete from siswa where nisn ='" + tnisnsiswa.getText() + "'";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "berhasil");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "gagal");
+        }
+        resetFormsiswa();
+    }
+}
+
 
     }//GEN-LAST:event_btnhapussisActionPerformed
 
@@ -3784,7 +3839,7 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_ttahunActionPerformed
 
     private void tnominalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnominalActionPerformed
-        
+
     }//GEN-LAST:event_tnominalActionPerformed
 
     private void tabelsppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelsppMouseClicked
@@ -3841,7 +3896,7 @@ public class tampilan extends javax.swing.JFrame {
         try {
             String sql = "INSERT INTO spp VALUES ('" + tidspp.getText()
                     + "','" + ttahun.getText()
-                    + "','" + tnominal.getText() 
+                    + "','" + tnominal.getText()
                     + "','" + cgannep.getSelectedItem()
                     + "','" + totalnom.getText()
                     + "')";
@@ -4193,7 +4248,7 @@ public class tampilan extends javax.swing.JFrame {
     private void comboidsppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboidsppActionPerformed
         try {
             String comboboxidspp = comboidspp.getSelectedItem().toString();
-            String sql = "select * from spp where tahun='" + comboboxidspp + "'";
+            String sql = "select * from spp where tahun_ajaran='" + comboboxidspp + "'";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -4258,22 +4313,96 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_txtcarisisKeyReleased
 
     private void tabelsiswamasterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelsiswamasterMouseClicked
+
+//        int baris = tabelsiswamaster.rowAtPoint(evt.getPoint());
+//        String nisnsis = tabelsiswamaster.getValueAt(baris, 0).toString();
+//        tnisnsiswa.setText(nisnsis);
+//        String nissis = tabelsiswamaster.getValueAt(baris, 1).toString();
+//        tnissiswa.setText(nissis);
+//        String nama = tabelsiswamaster.getValueAt(baris, 2).toString();
+//        tnamasiswas.setText(nama);
+//        String id_kelas = tabelsiswamaster.getValueAt(baris, 3).toString();
+////        nampilin nama kelas ke combobox
+//        try {
+//            String sql = "SELECT * FROM kelas where id_kelas='" + id_kelas + "'";
+//            PreparedStatement ps = con.prepareStatement(sql);
+//            ResultSet rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//               comboidkelas.setSelectedItem(rs.getString("nama_kelas"));
+//            }
+//
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, "error gakbisa tampil" + e.getMessage());
+//        }
+//        
+//        String alamat = tabelsiswamaster.getValueAt(baris, 4).toString();
+//        talamatsiswa.setText(alamat);
+//        String notelp = tabelsiswamaster.getValueAt(baris, 5).toString();
+//        ttelesiswa.setText(notelp);
+//        String spp = tabelsiswamaster.getValueAt(baris, 3).toString();
+//        try {
+//            String sql2 = "SELECT * FROM spp where id_spp='" + spp + "'";
+//            PreparedStatement ps = con.prepareStatement(sql2);
+//            ResultSet rs2 = ps.executeQuery();
+//
+//            while (rs2.next()) {
+//               comboidspp.setSelectedItem(rs2.getString("tahun_ajaran"));
+//                System.out.println(rs2.getString("tahun_ajaran"));
+//            }
+//
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, "error gakbisa tampil" + e.getMessage());
+//        }
+//        bsimpansiswa.setEnabled(false);
         int baris = tabelsiswamaster.rowAtPoint(evt.getPoint());
         String nisnsis = tabelsiswamaster.getValueAt(baris, 0).toString();
         tnisnsiswa.setText(nisnsis);
         String nissis = tabelsiswamaster.getValueAt(baris, 1).toString();
-        tnissiswa.setText(nisnsis);
+        tnissiswa.setText(nissis);
         String nama = tabelsiswamaster.getValueAt(baris, 2).toString();
         tnamasiswas.setText(nama);
-        String kelas = tabelsiswamaster.getValueAt(baris, 3).toString();
-        comboidkelas.setSelectedItem(kelas);
+        String id_kelas = tabelsiswamaster.getValueAt(baris, 3).toString();
+
+// menampilkan nama kelas ke combobox
+        try {
+            String sql = "SELECT * FROM kelas WHERE id_kelas = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, id_kelas);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                comboidkelas.setSelectedItem(rs.getString("nama_kelas"));
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "error gakbisa tampil" + e.getMessage());
+        }
+
         String alamat = tabelsiswamaster.getValueAt(baris, 4).toString();
         talamatsiswa.setText(alamat);
         String notelp = tabelsiswamaster.getValueAt(baris, 5).toString();
         ttelesiswa.setText(notelp);
-        String spp = tabelsiswamaster.getValueAt(baris, 3).toString();
-        comboidspp.setSelectedItem(spp);
+        String spp = tabelsiswamaster.getValueAt(baris, 6).toString();
+
+// menampilkan tahun ajaran ke combobox
+        try {
+            String sql2 = "SELECT * FROM spp WHERE id_spp = ?";
+            PreparedStatement ps2 = con.prepareStatement(sql2);
+            ps2.setString(1, spp);
+            ResultSet rs2 = ps2.executeQuery();
+
+            if (rs2.next()) {
+                comboidspp.setSelectedItem(rs2.getString("tahun_ajaran"));
+                System.out.println(rs2.getString("tahun_ajaran"));
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "error gakbisa tampil" + e.getMessage());
+        }
+
         bsimpansiswa.setEnabled(false);
+
     }//GEN-LAST:event_tabelsiswamasterMouseClicked
 
     private void beditsppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beditsppActionPerformed
@@ -4281,7 +4410,7 @@ public class tampilan extends javax.swing.JFrame {
             String tahun = ttahun.getText();
             String nominal = tnominal.getText();
 
-            String sql = "update spp set tahun_ajaran='" + tahun + "', nominal_perbulan='" + nominal +"', semester ='" + cgannep.getSelectedItem()+"', total_nominal_semester='" + totalnom.getText()  +"' where id_spp='" + tidspp.getText() + "'";
+            String sql = "update spp set tahun_ajaran='" + tahun + "', nominal_perbulan='" + nominal + "', semester ='" + cgannep.getSelectedItem() + "', total_nominal_semester='" + totalnom.getText() + "' where id_spp='" + tidspp.getText() + "'";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.execute();
             JOptionPane.showMessageDialog(this, "Data Berhasil Di Edit");
@@ -4391,19 +4520,19 @@ public class tampilan extends javax.swing.JFrame {
     private void tnominalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tnominalKeyReleased
         String text = tnominal.getText();
         try {
-        // mengambil nilai dari textfield pertama
-        int angka = Integer.parseInt(tnominal.getText());
-        
-        // melakukan perhitungan
-        int hasil = angka * 6;
-        
-        // menampilkan hasil perhitungan di textfield kedua
-        totalnom.setText(Integer.toString(hasil));
-        
-    } catch (NumberFormatException e) {
-        // jika input bukan angka, tampilkan pesan error
-        totalnom.setText("Error: Masukkan angka");
-    }
+            // mengambil nilai dari textfield pertama
+            int angka = Integer.parseInt(tnominal.getText());
+
+            // melakukan perhitungan
+            int hasil = angka * 6;
+
+            // menampilkan hasil perhitungan di textfield kedua
+            totalnom.setText(Integer.toString(hasil));
+
+        } catch (NumberFormatException e) {
+            // jika input bukan angka, tampilkan pesan error
+            totalnom.setText("Error: Masukkan angka");
+        }
         if (text.length() > 7) {
             JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 7.");
             String potongkarakter = text.substring(0, 7);
@@ -4435,7 +4564,14 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel78MouseClicked
 
     private void backssiwaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backssiwaMouseClicked
+
+        System.out.println(comboidkelas.getItemCount()); // menampilkan jumlah item pada combobox
+        for (int i = 0; i < comboidkelas.getItemCount(); i++) {
+            System.out.println(comboidkelas.getItemAt(i)); // menampilkan isi setiap item pada combobox
+        }
         resetFormsiswa();
+
+
     }//GEN-LAST:event_backssiwaMouseClicked
 
     private void tnisnsiswaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tnisnsiswaKeyReleased
@@ -4584,6 +4720,10 @@ public class tampilan extends javax.swing.JFrame {
     private void totalnomKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_totalnomKeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_totalnomKeyReleased
+
+    private void boxlevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxlevelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_boxlevelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -4923,10 +5063,10 @@ public class tampilan extends javax.swing.JFrame {
         tnisnsiswa.setText("");
         tnissiswa.setText("");
         tnamasiswas.setText("");
-        comboidkelas.setSelectedItem("~pilih kelas");
+        comboidkelas.setSelectedItem("");
         talamatsiswa.setText("");
         ttelesiswa.setText("");
-        comboidspp.setSelectedItem("~angkatan tahun");
+        comboidspp.setSelectedItem("");
 
         tablesiswa();
         bsimpansiswa.setEnabled(true);
