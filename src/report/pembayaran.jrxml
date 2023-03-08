@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c67c166b-84f7-404b-8ce2-31757913bc5f">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="64"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM pembayaran]]>
+	</queryString>
+	<field name="Id_pembayaran" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Id_petugas" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nisn" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Id_kelas" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tgl_bayar" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="semester" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="jumlah_bayar" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Id_spp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sisa_pembayaran" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="92" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="004cd339-0efb-40e1-afb1-86e7152f216a" x="164" y="0" width="322" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SMK NEGERI 6 KOTA BEKASI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="004cd339-0efb-40e1-afb1-86e7152f216a" x="164" y="30" width="322" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[LAPORAN SPP]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement uuid="898d99c0-ad38-48db-8276-a0114526c316" x="20" y="0" width="101" height="86"/>
+				<imageExpression><![CDATA["C:\\Users\\Adhwa\\OneDrive\\Pictures\\Logosmk.jpeg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="46" splitType="Stretch">
+			<line>
+				<reportElement uuid="d085d2e9-bb37-47a7-9cc3-f98ca56ee2f3" x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="109" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="0" y="77" width="65" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="66" y="77" width="65" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="131" y="77" width="81" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="212" y="77" width="65" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="277" y="77" width="86" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="363" y="77" width="58" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="421" y="77" width="44" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="465" y="77" width="39" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="504" y="77" width="51" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="8d5f3a0b-68a9-451c-86c9-5526f20a2b00" x="0" y="77" width="65" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Id Pembayaran]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8d5f3a0b-68a9-451c-86c9-5526f20a2b00" x="65" y="77" width="66" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ID PETUGAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8d5f3a0b-68a9-451c-86c9-5526f20a2b00" x="131" y="77" width="81" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NISN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3725de8c-4e18-4831-81f5-da52cfb12506" x="212" y="77" width="65" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ID KELAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9da36e40-c7a3-43ec-b911-dacc58b57835" x="277" y="77" width="86" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[TANGGAL BAYAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="542c580a-13fe-4d00-8003-38f93f466e66" x="363" y="77" width="58" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[SEMESTER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="df1c1518-ed7d-4e9e-a606-6c874733bb6e" x="421" y="77" width="44" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[BAYAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4a11c7df-5ac0-4b0f-88e4-4d509577c261" x="465" y="77" width="39" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ID SPP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d5ff8dac-7507-42e1-a1ab-862d3bf3d894" x="504" y="77" width="51" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[SISA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="421" y="57" width="44" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="df1c1518-ed7d-4e9e-a606-6c874733bb6e" x="421" y="57" width="44" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[JUMLAH]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="61" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6c2e11a7-d656-4c55-a665-f87290de4da8" x="1" y="5" width="65" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Id_pembayaran}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ff19cb9c-241f-4a4b-9e28-cf4187f72d49" x="64" y="5" width="66" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Id_petugas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5251bc42-391d-4bb2-a7c4-d08084d0db75" x="130" y="5" width="81" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{nisn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8ddb0d93-ecca-49ed-bf67-f4ca97b4b527" x="211" y="5" width="65" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Id_kelas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aed029d1-4e08-44eb-84a3-28204dfa394f" x="277" y="5" width="86" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{tgl_bayar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="28bfb5b3-5bf0-429f-bdbf-8f1fcf7ab729" x="363" y="5" width="58" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{semester}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cfe0ed92-7603-4a4d-945a-dd3e8493aa5e" x="421" y="5" width="44" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{jumlah_bayar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="693a3562-4be6-4add-8c78-5158f7446525" x="465" y="5" width="39" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Id_spp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1b485d11-5a26-4006-a029-6a84063342a5" x="504" y="5" width="51" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sisa_pembayaran}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="363" y="5" width="58" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="421" y="5" width="44" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="465" y="5" width="39" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="65" y="5" width="65" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="212" y="5" width="65" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="1" y="5" width="65" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="131" y="5" width="81" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="277" y="5" width="86" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91513ed6-14e5-451f-8806-ec78158a35a6" x="504" y="5" width="51" height="20"/>
+			</rectangle>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

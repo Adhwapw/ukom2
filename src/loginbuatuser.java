@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import javax.swing.DefaultListCellRenderer;
 
 /*
@@ -119,6 +120,11 @@ public class loginbuatuser extends javax.swing.JFrame {
                 tuser1ActionPerformed(evt);
             }
         });
+        tuser1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tuser1KeyPressed(evt);
+            }
+        });
         getContentPane().add(tuser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 170, 30));
 
         salah.setForeground(new java.awt.Color(255, 51, 51));
@@ -134,16 +140,38 @@ public class loginbuatuser extends javax.swing.JFrame {
         getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, 110, -1));
 
         tpass.setBackground(new java.awt.Color(255, 255, 255, 0));
+        tpass.setText("masukan password");
+        tpass.setToolTipText("");
         tpass.setBorder(null);
         tpass.setEchoChar('\u25cf');
+        tpass.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tpassFocusGained(evt);
+            }
+        });
         tpass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tpassActionPerformed(evt);
             }
         });
+        tpass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tpassKeyPressed(evt);
+            }
+        });
         getContentPane().add(tpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 170, 30));
 
         clevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih", "admin", "petugas" }));
+        clevel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                clevelFocusGained(evt);
+            }
+        });
+        clevel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clevelActionPerformed(evt);
+            }
+        });
         getContentPane().add(clevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 180, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-back-arrow-30.png"))); // NOI18N
@@ -191,7 +219,7 @@ public class loginbuatuser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tuser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tuser1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_tuser1ActionPerformed
 
     private void asliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_asliMouseClicked
@@ -229,6 +257,8 @@ public class loginbuatuser extends javax.swing.JFrame {
                 if (levelpet.equals("admin")) {
                     tampilan menu = new tampilan();
 //                    menu.siswa.setEnabled( false);
+                    menu.greating.setText("Selamat Datang Admin Ku  " + rs.getString(4));
+
                     menu.setVisible(true);
                     this.dispose();
 
@@ -246,9 +276,7 @@ public class loginbuatuser extends javax.swing.JFrame {
                     menu1.greating.setText("Halooo " + rs.getString(2));
                     menu1.setVisible(true);
                     this.dispose();
-//                    
                 }
-
             } else if (!rs.next()) {
                 JOptionPane.showMessageDialog(rootPane, "Login Gagal", "Pesan", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -317,17 +345,43 @@ public class loginbuatuser extends javax.swing.JFrame {
     }//GEN-LAST:event_asliMouseExited
 
     private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
-       jLabel2.setForeground(new Color(217, 217, 217, 128));
+        jLabel2.setForeground(new Color(217, 217, 217, 128));
     }//GEN-LAST:event_jLabel2MouseEntered
 
     private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
         jLabel2.setForeground(new Color(255, 255, 255));
     }//GEN-LAST:event_jLabel2MouseExited
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+    private void tpassFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tpassFocusGained
+        if (tpass.getText().equals("masukan password")) {
+            tpass.setText("");
+        }
+    }//GEN-LAST:event_tpassFocusGained
+
+    private void clevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clevelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clevelActionPerformed
+
+    private void tuser1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tuser1KeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            tpass.requestFocus();
+        }
+    }//GEN-LAST:event_tuser1KeyPressed
+
+    private void tpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tpassKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            clevel.requestFocus();
+        }
+    }//GEN-LAST:event_tpassKeyPressed
+
+    private void clevelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_clevelFocusGained
+         clevel.showPopup();
+    }//GEN-LAST:event_clevelFocusGained
+
+/**
+ * @param args the command line arguments
+ */
+public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -338,16 +392,28 @@ public class loginbuatuser extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(loginbuatuser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(loginbuatuser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(loginbuatuser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(loginbuatuser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginbuatuser.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(loginbuatuser.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(loginbuatuser.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(loginbuatuser.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

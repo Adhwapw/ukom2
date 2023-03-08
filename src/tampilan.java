@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.interfaces.PBEKey;
+import javax.swing.ButtonModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.Timer;
@@ -61,7 +62,14 @@ public class tampilan extends javax.swing.JFrame {
         id_otomatis();
         id_otomatisspp();
         tabelSiswapem();
+        tampiltabelpembayaran();
+        tampiltabelrekapan();
         ID_AUTO();
+        tidpetugas.setEnabled(false);
+        JOptionPane.showMessageDialog(rootPane, "petugas masih banak yang error,pembayaran belum"
+                + "desain masih belum kelar");
+        JOptionPane.showMessageDialog(rootPane, "petugas masih banak yang error,pembayaran belum"
+                + "siswa masih error gara-gara trigger");
     }
     String kelas;
     String spp;
@@ -116,6 +124,33 @@ public class tampilan extends javax.swing.JFrame {
 
     }
 
+    public void id_otomatistagihan() {
+        try {
+            String sql = "select * from tagihan order by Id_tagihan desc";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            tid_tagihan.setEnabled(false);
+            if (rs.next()) {
+                String nourut = rs.getString("Id_tagihan").substring(1);
+                String an = "" + (Integer.parseInt(nourut) + 1);
+                String nol = "";
+                if (an.length() == 1) {
+                    nol = "00";
+                } else if (an.length() == 2) {
+                    nol = "0";
+                } else if (an.length() == 3) {
+                    nol = "";
+                }
+                tid_tagihan.setText("T" + nol + an);
+
+            } else {
+                tid_tagihan.setText("T001");
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
 //    Id otomatis untuk SPP...
     public void id_otomatisspp() {
         try {
@@ -141,6 +176,33 @@ public class tampilan extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
+        }
+    }
+
+//    id otomatis untuk petugas...
+    public void id_otomatispetu() {
+        try {
+            tidpetugas.setEnabled(false);
+            String prefix = "";
+            if (boxlevel.getSelectedItem().equals("petugas")) {
+                prefix = "P";
+            } else if (boxlevel.getSelectedItem().equals("admin")) {
+                prefix = "A";
+            }
+            String sql = "SELECT Id_petugas FROM petugas ORDER BY Id_petugas DESC LIMIT 1";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String id = rs.getString("Id_petugas");
+                int sequence = Integer.parseInt(id.substring(1));
+                sequence++;
+                String newId = prefix + String.format("%03d", sequence);
+                tidpetugas.setText(newId);
+            } else {
+                tidpetugas.setText(prefix + "001");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -176,6 +238,7 @@ public class tampilan extends javax.swing.JFrame {
         }
     }
 
+//    menampilkan total persemester 
     public void tampiltotalsiswa() {
         try {
             String sql = "SELECT COUNT(*) FROM siswa";
@@ -193,6 +256,7 @@ public class tampilan extends javax.swing.JFrame {
         }
     }
 
+//    menampilkan total petugas yang terdaftar....
     public void tampiltotalpetugas() {
         try {
             String sql = "SELECT COUNT(*) FROM petugas";
@@ -210,6 +274,7 @@ public class tampilan extends javax.swing.JFrame {
         }
     }
 
+//    menampilkan total kelas yang terdaftar...
     public void tampiltotalkelas() {
         try {
             String sql = "SELECT COUNT(*) FROM kelas";
@@ -226,14 +291,15 @@ public class tampilan extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
-//    Tampil jam
 
+//    Tampil jam
     public void showDate() {
         Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("dd-MMMMMMMMMM-yyyy");
         String dat = s.format(d);
         ltgl.setText(dat);
     }
+//    menampilkan jam
 
     public void showTime() {
         new Timer(0, new ActionListener() {
@@ -247,26 +313,27 @@ public class tampilan extends javax.swing.JFrame {
         }).start();
     }
 
+//    menampilkan tabel siswa pada panel pembayaran..
     private void tabelSiswapem() {
-        String[] judul = {"NISN", "NIS", "Nama", "Kelas", "Alamat", "Telepon", "Tahun"};
+        String[] judul = {"NISN", "NAMA", "KELAS", "TAHUN", "NOMINAL", "SEMESTER", "TOTAL"};
         DefaultTableModel model = new DefaultTableModel(judul, 0);
         tabelsiswapembayaran.setModel(model);
         try {
-            String sql = "SELECT siswa.*, kelas.nama_kelas, spp.tahun_ajaran from siswa INNER JOIN kelas USING(Id_kelas) INNER JOIN spp Using(Id_spp) where nisn like '%" + cari.getText() + "%' or nama like '%" + cari.getText() + "%'";
+            String sql = "SELECT siswa.*, kelas.nama_kelas, spp.*  from siswa INNER JOIN kelas USING(Id_kelas) INNER JOIN spp Using(Id_spp) where nisn like '%" + cari.getText() + "%' or nama like '%" + cari.getText() + "%'";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             rs = con.createStatement().executeQuery(sql);
 
             while (rs.next()) {
                 String nisn = rs.getString("nisn");
-                String nis = rs.getString("nis");
                 String nama = rs.getString("nama");
                 String kelas = rs.getString("nama_kelas");
-                String alamat = rs.getString("alamat");
-                String telp = rs.getString("no_telp");
                 String tahun = rs.getString("tahun_ajaran");
+                String nominal = rs.getString("nominal_perbulan");
+                String semester = rs.getString("semester");
+                String total = rs.getString("total_nominal_semester");
 
-                String[] data = {nisn, nis, nama, kelas, alamat, telp, tahun};
+                String[] data = {nisn, nama, kelas, tahun, nominal, semester, total};
                 model.addRow(data);
             }
         } catch (Exception e) {
@@ -276,6 +343,7 @@ public class tampilan extends javax.swing.JFrame {
 
     }
 
+//    menampilkan tabel siswa master
     public void tablesiswa() {
         DefaultTableModel tbl = new DefaultTableModel();
         tbl.addColumn("NISN");
@@ -345,8 +413,8 @@ public class tampilan extends javax.swing.JFrame {
         }
         tablekelas();
     }
-//untuk panel Petugas>>|
 
+//untuk panel Petugas>>|
     public void tablepetugas() {
         DefaultTableModel tbpetu = new DefaultTableModel();
         tbpetu.addColumn("Id Petugas");
@@ -378,11 +446,18 @@ public class tampilan extends javax.swing.JFrame {
 
     }
 
+    public void refreshhome() {
+        tampiltotalkelas();
+        tampiltotalpetugas();
+        tampiltotalsiswa();
+    }
+
     public void refreshpetugas() {
         try {
             String sql = "SELECT * FROM petugas WHERE Id_petugas ='" + tidpetugas.getText() + "'";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.execute();
+            tidpetugas.setText("terisi otomatis tenang aja..");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -425,7 +500,6 @@ public class tampilan extends javax.swing.JFrame {
 
                 tabelspp.setModel(tbspp);
             }
-//            JOptionPane.showMessageDialog(null, "Koneksi berhasil");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Koneksi gagal" + e.getMessage());
         }
@@ -587,6 +661,7 @@ public class tampilan extends javax.swing.JFrame {
         tnis7 = new javax.swing.JTextField();
         jScrollPane14 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         asli = new javax.swing.JLabel();
         hover = new javax.swing.JLabel();
@@ -696,19 +771,40 @@ public class tampilan extends javax.swing.JFrame {
         tNama_siswa = new javax.swing.JTextField();
         tKelas = new javax.swing.JTextField();
         tId_Angkatan = new javax.swing.JTextField();
-        tId_petugas = new javax.swing.JTextField();
+        tnama_petugas = new javax.swing.JTextField();
         tTanggal = new javax.swing.JTextField();
-        tAngkatan = new javax.swing.JLabel();
-        tPetugas = new javax.swing.JLabel();
+        lblidspp = new javax.swing.JLabel();
+        lle = new javax.swing.JLabel();
         tnama_siswastatus = new javax.swing.JLabel();
         tJumlahbayar = new javax.swing.JTextField();
         namasiswa1 = new javax.swing.JLabel();
         namasiswa2 = new javax.swing.JLabel();
         namasiswa3 = new javax.swing.JLabel();
         namasiswa4 = new javax.swing.JLabel();
-        namasiswa5 = new javax.swing.JLabel();
+        lnperbulan = new javax.swing.JLabel();
         jScrollPane16 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tabelpembayaran = new javax.swing.JTable();
+        lsemes = new javax.swing.JLabel();
+        ganjil = new javax.swing.JCheckBox();
+        genap = new javax.swing.JCheckBox();
+        namasiswa5 = new javax.swing.JLabel();
+        tid_pet = new javax.swing.JTextField();
+        llev = new javax.swing.JLabel();
+        lttg = new javax.swing.JLabel();
+        ttagihan = new javax.swing.JTextField();
+        lttg1 = new javax.swing.JLabel();
+        tjmlygdi = new javax.swing.JTextField();
+        lttg2 = new javax.swing.JLabel();
+        tsisatagihan = new javax.swing.JTextField();
+        tstatuspem = new javax.swing.JTextField();
+        tnama_siswastatus1 = new javax.swing.JLabel();
+        tangsuranke = new javax.swing.JTextField();
+        btnsimpantransaksi = new javax.swing.JButton();
+        jScrollPane17 = new javax.swing.JScrollPane();
+        tabeltagihan = new javax.swing.JTable();
+        tIDKE = new javax.swing.JTextField();
+        tid_tagihan = new javax.swing.JTextField();
+        simpan_pembayaran = new javax.swing.JButton();
         backpembayaran = new javax.swing.JLabel();
         Pkelas = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -2313,8 +2409,8 @@ public class tampilan extends javax.swing.JFrame {
         });
         Phome.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 20, 40, 40));
 
-        greating.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        Phome.add(greating, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 478, 80));
+        greating.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        Phome.add(greating, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 560, 80));
 
         ltgl.setFont(new java.awt.Font("Ravie", 1, 14)); // NOI18N
         ltgl.setText("sd");
@@ -2619,6 +2715,7 @@ public class tampilan extends javax.swing.JFrame {
         jLabel33.setText("Level");
 
         tidpetugas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tidpetugas.setText("terisi otomatis tenang aja..");
         tidpetugas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tidpetugasActionPerformed(evt);
@@ -2752,13 +2849,10 @@ public class tampilan extends javax.swing.JFrame {
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel16Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(tidpetugas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel28)))
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel28)
+                            .addComponent(tidpetugas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel16Layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
@@ -2858,7 +2952,7 @@ public class tampilan extends javax.swing.JFrame {
                 .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addComponent(caripetu, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2885,6 +2979,7 @@ public class tampilan extends javax.swing.JFrame {
                 "ID SPP", "Tahun", "Nominal"
             }
         ));
+        tabelspp.setSelectionBackground(new java.awt.Color(161, 137, 90));
         tabelspp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelsppMouseClicked(evt);
@@ -2944,6 +3039,9 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         tnominal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tnominalKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 tnominalKeyReleased(evt);
             }
@@ -2986,7 +3084,7 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(totalnom);
-        totalnom.setBounds(850, 520, 170, 40);
+        totalnom.setBounds(850, 470, 170, 40);
 
         jLabel34.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel34.setText("ID SPP");
@@ -3005,7 +3103,7 @@ public class tampilan extends javax.swing.JFrame {
 
         cgannep.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--pilih--", "ganjil", "genap" }));
         Psppp.add(cgannep);
-        cgannep.setBounds(850, 470, 110, 22);
+        cgannep.setBounds(860, 570, 110, 22);
 
         caridataspp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3018,7 +3116,7 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(caridataspp);
-        caridataspp.setBounds(530, 120, 140, 22);
+        caridataspp.setBounds(640, 110, 170, 30);
 
         backspp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backspp.png"))); // NOI18N
         backspp.setText("jLabel73");
@@ -3039,7 +3137,7 @@ public class tampilan extends javax.swing.JFrame {
                 cariKeyReleased(evt);
             }
         });
-        Ppembayaran.add(cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 52, 350, 30));
+        Ppembayaran.add(cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 10, 110, 30));
 
         tabelsiswapembayaran.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -3059,50 +3157,52 @@ public class tampilan extends javax.swing.JFrame {
         });
         jScrollPane15.setViewportView(tabelsiswapembayaran);
 
-        Ppembayaran.add(jScrollPane15, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 100, -1, 140));
+        Ppembayaran.add(jScrollPane15, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 520, 200));
 
         jLabel76.setText("NO. Transaksi");
-        Ppembayaran.add(jLabel76, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 90, 20));
+        Ppembayaran.add(jLabel76, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 90, 20));
 
         jLabel77.setText("NISN");
-        Ppembayaran.add(jLabel77, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 90, 20));
+        Ppembayaran.add(jLabel77, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 90, 20));
 
         namasiswa.setText("Nama Siswa");
-        Ppembayaran.add(namasiswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 90, 20));
-        Ppembayaran.add(tNo_Transaki, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 100, -1));
-        Ppembayaran.add(tNisn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 100, -1));
-        Ppembayaran.add(tNama_siswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, 100, -1));
-        Ppembayaran.add(tKelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 240, 100, -1));
-        Ppembayaran.add(tId_Angkatan, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 280, 100, -1));
-        Ppembayaran.add(tId_petugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 320, 100, -1));
-        Ppembayaran.add(tTanggal, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 380, 130, -1));
-        Ppembayaran.add(tAngkatan, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 280, 100, 20));
-        Ppembayaran.add(tPetugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, 100, 20));
-        Ppembayaran.add(tnama_siswastatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 550, 110, -1));
+        Ppembayaran.add(namasiswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 90, 20));
+        Ppembayaran.add(tNo_Transaki, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 130, -1));
+        Ppembayaran.add(tNisn, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 130, -1));
+        Ppembayaran.add(tNama_siswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 130, -1));
+        Ppembayaran.add(tKelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, 130, -1));
+        Ppembayaran.add(tId_Angkatan, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 150, 130, -1));
+        Ppembayaran.add(tnama_petugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 30, 130, -1));
+        Ppembayaran.add(tTanggal, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 130, -1));
+        Ppembayaran.add(lblidspp, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 150, 100, 20));
+        Ppembayaran.add(lle, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 30, 110, 20));
+
+        tnama_siswastatus.setText("Status Pembayaran");
+        Ppembayaran.add(tnama_siswastatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 370, 110, 20));
 
         tJumlahbayar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tJumlahbayarActionPerformed(evt);
             }
         });
-        Ppembayaran.add(tJumlahbayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 580, 100, -1));
+        Ppembayaran.add(tJumlahbayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 230, 100, -1));
 
         namasiswa1.setText("Kelas");
-        Ppembayaran.add(namasiswa1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 90, 20));
+        Ppembayaran.add(namasiswa1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 90, 20));
 
         namasiswa2.setText("Angkatan");
-        Ppembayaran.add(namasiswa2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, 90, 20));
+        Ppembayaran.add(namasiswa2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 90, 20));
 
-        namasiswa3.setText("Petugas");
-        Ppembayaran.add(namasiswa3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 90, 20));
+        namasiswa3.setText("Nama Petugas");
+        Ppembayaran.add(namasiswa3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, 90, 20));
 
         namasiswa4.setText("Tanggal");
-        Ppembayaran.add(namasiswa4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, 90, 20));
+        Ppembayaran.add(namasiswa4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 90, 20));
 
-        namasiswa5.setText("Jumlah Bayar");
-        Ppembayaran.add(namasiswa5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 90, 20));
+        lnperbulan.setText("Nominal Perbulan");
+        Ppembayaran.add(lnperbulan, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 230, 100, 20));
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tabelpembayaran.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -3113,9 +3213,134 @@ public class tampilan extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane16.setViewportView(jTable3);
+        jScrollPane16.setViewportView(tabelpembayaran);
 
-        Ppembayaran.add(jScrollPane16, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 330, -1, 240));
+        Ppembayaran.add(jScrollPane16, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 310, 510, 240));
+
+        lsemes.setText("Semester");
+        Ppembayaran.add(lsemes, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 190, 90, 20));
+
+        buttonGroup1.add(ganjil);
+        ganjil.setText("Ganjil");
+        ganjil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ganjilActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(ganjil, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 190, 60, -1));
+
+        buttonGroup1.add(genap);
+        genap.setText("Genap");
+        Ppembayaran.add(genap, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 190, -1, -1));
+
+        namasiswa5.setText("Id Petugas");
+        Ppembayaran.add(namasiswa5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 90, 20));
+
+        tid_pet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tid_petActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(tid_pet, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 70, 130, -1));
+
+        llev.setText(" Level Petugas  :");
+        Ppembayaran.add(llev, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 90, -1));
+
+        lttg.setText("Total Tagihan");
+        Ppembayaran.add(lttg, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 90, 20));
+
+        ttagihan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ttagihanKeyPressed(evt);
+            }
+        });
+        Ppembayaran.add(ttagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 130, -1));
+
+        lttg1.setText("Jumlah yang dibayarkan");
+        Ppembayaran.add(lttg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 130, 20));
+
+        tjmlygdi.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tjmlygdiFocusGained(evt);
+            }
+        });
+        tjmlygdi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tjmlygdiKeyPressed(evt);
+            }
+        });
+        Ppembayaran.add(tjmlygdi, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 130, -1));
+
+        lttg2.setText("Sisa Tagihan");
+        Ppembayaran.add(lttg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 330, 130, 20));
+
+        tsisatagihan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tsisatagihanKeyPressed(evt);
+            }
+        });
+        Ppembayaran.add(tsisatagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 130, -1));
+
+        tstatuspem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tstatuspemActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(tstatuspem, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 370, 130, -1));
+
+        tnama_siswastatus1.setText("Angsuran ke-");
+        Ppembayaran.add(tnama_siswastatus1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 420, 110, 20));
+
+        tangsuranke.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tangsurankeActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(tangsuranke, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 420, 130, -1));
+
+        btnsimpantransaksi.setText("Simpan Transaksi");
+        btnsimpantransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsimpantransaksiActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(btnsimpantransaksi, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, -1, -1));
+
+        tabeltagihan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabeltagihan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabeltagihanMouseClicked(evt);
+            }
+        });
+        jScrollPane17.setViewportView(tabeltagihan);
+
+        Ppembayaran.add(jScrollPane17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, 520, 190));
+
+        tIDKE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tIDKEActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(tIDKE, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 110, 130, 20));
+        Ppembayaran.add(tid_tagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 130, -1));
+
+        simpan_pembayaran.setText("jButton1");
+        simpan_pembayaran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpan_pembayaranActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(simpan_pembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 480, -1, -1));
 
         backpembayaran.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backbuatformpembayaran.png"))); // NOI18N
         Ppembayaran.add(backpembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 930, -1));
@@ -3517,37 +3742,46 @@ public class tampilan extends javax.swing.JFrame {
     private void bsimpansiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsimpansiswaActionPerformed
         String idkelas = comboidkelas.getSelectedItem().toString();
         String idspp = comboidspp.getSelectedItem().toString();
-//        String idspp = comboidkelas.getSelectedItem(rs.getString("id_spp")).toString();
-        try {
-            String sql = "INSERT INTO siswa VALUES ('" + tnisnsiswa.getText()
-                    + "','" + tnissiswa.getText()
-                    + "','" + tnamasiswas.getText()
-                    + "','" + kelas
-                    + "','" + talamatsiswa.getText()
-                    + "','" + ttelesiswa.getText()
-                    + "','" + spp
-                    + "')";
-//            Connection con = (Connection) koneksi.getConnection();
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "Data Sudah Tersimpan");
-            tnisnsiswa.setText("");
-            tnissiswa.setText("");
-            tnamasiswas.setText("");
-            tampilidkelas.setText("");
-            talamatsiswa.setText("");
-            ttelesiswa.setText("");
-            tampidspp.setText("");
 
-            DefaultTableModel model = (DefaultTableModel) tabelkelas.getModel();
-            model.setRowCount(0);
-//            tampil_comboidkelas();
-            refreshsiswa();
+// cek apakah ada field yang kosong
+        if (tnisnsiswa.getText().isEmpty() || tnissiswa.getText().isEmpty() || tnamasiswas.getText().isEmpty()
+                || idkelas.equals("--pilih--") || talamatsiswa.getText().isEmpty() || ttelesiswa.getText().isEmpty()
+                || idspp.equals("--pilih--")) {
+            JOptionPane.showMessageDialog(rootPane, "Mohon lengkapi semua field");
+//            jika lengkap maka lanjut
+        } else {
+            try {
+                String sql = "INSERT INTO siswa VALUES ('" + tnisnsiswa.getText()
+                        + "','" + tnissiswa.getText()
+                        + "','" + tnamasiswas.getText()
+                        + "','" + kelas
+                        + "','" + talamatsiswa.getText()
+                        + "','" + ttelesiswa.getText()
+                        + "','" + spp
+                        + "','0"
+                        + "')";
 
-        } catch (Exception e) {
-            System.out.println("gagal memasukkan data" + e.getMessage());
-            JOptionPane.showMessageDialog(rootPane, "Data masih kosong");
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.execute();
+                JOptionPane.showMessageDialog(null, "Data Sudah Tersimpan");
+                tnisnsiswa.setText("");
+                tnissiswa.setText("");
+                tnamasiswas.setText("");
+                tampilidkelas.setText("");
+                talamatsiswa.setText("");
+                ttelesiswa.setText("");
+                tampidspp.setText("");
+
+                DefaultTableModel model = (DefaultTableModel) tabelkelas.getModel();
+                model.setRowCount(0);
+                refreshsiswa();
+
+            } catch (Exception e) {
+                System.out.println("gagal memasukkan data" + e.getMessage());
+                JOptionPane.showMessageDialog(rootPane, "Terjadi kesalahan saat menyimpan data");
+            }
         }
+
     }//GEN-LAST:event_bsimpansiswaActionPerformed
 
     private void btneditsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditsisActionPerformed
@@ -3597,22 +3831,22 @@ public class tampilan extends javax.swing.JFrame {
 //            }
 //            resetFormsiswa();
 //        }
-if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasiswas.getText().equals("") || comboidkelas.getSelectedItem().equals("--pilih--") || talamatsiswa.getText().equals("") || ttelesiswa.getText().equals("") || comboidspp.getSelectedItem().equals("--pilih--")) {
-    JOptionPane.showMessageDialog(null, "Proses hapus tidak bisa dijalankan");
-} else {
-    int p = JOptionPane.showConfirmDialog(null, "Apakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
-    if (p == 0) {
-        try {
-            String sql = "delete from siswa where nisn ='" + tnisnsiswa.getText() + "'";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "berhasil");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "gagal");
+        if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasiswas.getText().equals("") || comboidkelas.getSelectedItem().equals("--pilih--") || talamatsiswa.getText().equals("") || ttelesiswa.getText().equals("") || comboidspp.getSelectedItem().equals("--pilih--")) {
+            JOptionPane.showMessageDialog(null, "Proses hapus tidak bisa dijalankan");
+        } else {
+            int p = JOptionPane.showConfirmDialog(null, "Apakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
+            if (p == 0) {
+                try {
+                    String sql = "delete from siswa where nisn ='" + tnisnsiswa.getText() + "'";
+                    PreparedStatement pst = con.prepareStatement(sql);
+                    pst.execute();
+                    JOptionPane.showMessageDialog(null, "berhasil");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "gagal");
+                }
+                resetFormsiswa();
+            }
         }
-        resetFormsiswa();
-    }
-}
 
 
     }//GEN-LAST:event_btnhapussisActionPerformed
@@ -3781,7 +4015,9 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     }//GEN-LAST:event_ttelpActionPerformed
 //petugas
     private void bsimpanpetuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsimpanpetuActionPerformed
+        id_otomatispetu();
         String pilihanlevel = (String) boxlevel.getSelectedItem();
+
         try {
             String sql = "INSERT INTO petugas VALUES ('" + tidpetugas.getText()
                     + "','" + tuserpetugas.getText()
@@ -3893,31 +4129,7 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     }//GEN-LAST:event_beditsppMouseClicked
 
     private void bsimpansppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bsimpansppMouseClicked
-        try {
-            String sql = "INSERT INTO spp VALUES ('" + tidspp.getText()
-                    + "','" + ttahun.getText()
-                    + "','" + tnominal.getText()
-                    + "','" + cgannep.getSelectedItem()
-                    + "','" + totalnom.getText()
-                    + "')";
-//            Connection con = (Connection) koneksi.getConnection();
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "Data Sudah Tersimpan");
-            tidspp.setText("");
-            ttahun.setText("");
-            tnominal.setText("");
-            cgannep.setSelectedItem("--pilih--");
-            totalnom.setText("");
 
-            DefaultTableModel model = (DefaultTableModel) tabelspp.getModel();
-            model.setRowCount(0);
-            refreshspp();
-            id_otomatisspp();
-
-        } catch (Exception e) {
-            System.out.println("gagal memasukkan data" + e.getMessage());
-        }
     }//GEN-LAST:event_bsimpansppMouseClicked
 
     private void tabelpetugasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelpetugasMouseClicked
@@ -4229,6 +4441,11 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
         mainpanel.add(Ppembayaran);
         mainpanel.repaint();
         mainpanel.revalidate();
+        tampilpetpadapem();
+        tabelSiswapem();
+        tampiltabelpembayaran();
+        tampiltabelrekapan();
+        refresh_formbayar();
     }//GEN-LAST:event_bpembayaranMouseClicked
 
     private void comboidkelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboidkelasActionPerformed
@@ -4272,24 +4489,29 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
         DefaultTableModel model = new DefaultTableModel();
         String tanggal = tahun + "/" + bulan + "/" + hari;
         tTanggal.setText(tanggal);
-
         int i = tabelsiswapembayaran.rowAtPoint(evt.getPoint());
+        String semesterberapa = tabelsiswapembayaran.getValueAt(i, 4).toString();
         tNisn.setText(tabelsiswapembayaran.getValueAt(i, 0).toString());
-        tNama_siswa.setText(tabelsiswapembayaran.getValueAt(i, 2).toString());
-        tnama_siswastatus.setText(tabelsiswapembayaran.getValueAt(i, 2).toString());
-        tKelas.setText(tabelsiswapembayaran.getValueAt(i, 3).toString());
-        tAngkatan.setText(tabelsiswapembayaran.getValueAt(i, 6).toString());
-        tId_petugas.setText(id);
-        tPetugas.setText(nama);
+        tNama_siswa.setText(tabelsiswapembayaran.getValueAt(i, 1).toString());
+        tKelas.setText(tabelsiswapembayaran.getValueAt(i, 2).toString());
+        tId_Angkatan.setText(tabelsiswapembayaran.getValueAt(i, 3).toString());
+        ttagihan.setText(tabelsiswapembayaran.getValueAt(i, 6).toString());
+//        buttonGroup1.setSelected(tabelsiswapembayaran.getValueAt(i, 4).toString());
+        if (semesterberapa.equals("ganjil")) {
+            genap.setSelected(true);
 
+        } else {
+            ganjil.setSelected(true);
+        }
         try {
             String sql = "select siswa.*, spp.* from siswa INNER JOIN spp Using(id_spp) where nisn like '%" + tNisn.getText() + "%'";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                tId_Angkatan.setText(rs.getString("id_spp"));
-                tJumlahbayar.setText(rs.getString("nominal"));
+                tIDKE.setText(rs.getString("Id_kelas"));
+                lblidspp.setText(rs.getString("id_spp"));
+                tJumlahbayar.setText(rs.getString("nominal_perbulan"));
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -4314,47 +4536,6 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
 
     private void tabelsiswamasterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelsiswamasterMouseClicked
 
-//        int baris = tabelsiswamaster.rowAtPoint(evt.getPoint());
-//        String nisnsis = tabelsiswamaster.getValueAt(baris, 0).toString();
-//        tnisnsiswa.setText(nisnsis);
-//        String nissis = tabelsiswamaster.getValueAt(baris, 1).toString();
-//        tnissiswa.setText(nissis);
-//        String nama = tabelsiswamaster.getValueAt(baris, 2).toString();
-//        tnamasiswas.setText(nama);
-//        String id_kelas = tabelsiswamaster.getValueAt(baris, 3).toString();
-////        nampilin nama kelas ke combobox
-//        try {
-//            String sql = "SELECT * FROM kelas where id_kelas='" + id_kelas + "'";
-//            PreparedStatement ps = con.prepareStatement(sql);
-//            ResultSet rs = ps.executeQuery();
-//
-//            while (rs.next()) {
-//               comboidkelas.setSelectedItem(rs.getString("nama_kelas"));
-//            }
-//
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(rootPane, "error gakbisa tampil" + e.getMessage());
-//        }
-//        
-//        String alamat = tabelsiswamaster.getValueAt(baris, 4).toString();
-//        talamatsiswa.setText(alamat);
-//        String notelp = tabelsiswamaster.getValueAt(baris, 5).toString();
-//        ttelesiswa.setText(notelp);
-//        String spp = tabelsiswamaster.getValueAt(baris, 3).toString();
-//        try {
-//            String sql2 = "SELECT * FROM spp where id_spp='" + spp + "'";
-//            PreparedStatement ps = con.prepareStatement(sql2);
-//            ResultSet rs2 = ps.executeQuery();
-//
-//            while (rs2.next()) {
-//               comboidspp.setSelectedItem(rs2.getString("tahun_ajaran"));
-//                System.out.println(rs2.getString("tahun_ajaran"));
-//            }
-//
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(rootPane, "error gakbisa tampil" + e.getMessage());
-//        }
-//        bsimpansiswa.setEnabled(false);
         int baris = tabelsiswamaster.rowAtPoint(evt.getPoint());
         String nisnsis = tabelsiswamaster.getValueAt(baris, 0).toString();
         tnisnsiswa.setText(nisnsis);
@@ -4423,7 +4604,34 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     }//GEN-LAST:event_beditsppActionPerformed
 
     private void bsimpansppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsimpansppActionPerformed
-        // TODO add your handling code here:
+        try {
+            if (tidspp.getText().isEmpty() || ttahun.getText().isEmpty() || tnominal.getText().isEmpty() || cgannep.getSelectedItem().equals("--pilih--")) {
+                JOptionPane.showMessageDialog(null, "Data masih ada yang kosong");
+            } else {
+                String sql = "INSERT INTO spp VALUES ('" + tidspp.getText()
+                        + "','" + ttahun.getText()
+                        + "','" + tnominal.getText()
+                        + "','" + cgannep.getSelectedItem()
+                        + "','" + totalnom.getText()
+                        + "')";
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.execute();
+                JOptionPane.showMessageDialog(null, "Data Sudah Tersimpan");
+                tidspp.setText("");
+                ttahun.setText("");
+                tnominal.setText("");
+                cgannep.setSelectedItem("--pilih--");
+                totalnom.setText("");
+
+                DefaultTableModel model = (DefaultTableModel) tabelspp.getModel();
+                model.setRowCount(0);
+                refreshspp();
+                id_otomatisspp();
+            }
+        } catch (Exception e) {
+            System.out.println("gagal memasukkan data" + e.getMessage());
+        }
+
     }//GEN-LAST:event_bsimpansppActionPerformed
 
     private void bhapussppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bhapussppActionPerformed
@@ -4466,6 +4674,7 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
 
         mainpanel.add(Phome);
         mainpanel.repaint();
+        refreshhome();
         mainpanel.revalidate();    }//GEN-LAST:event_jLabel23MouseClicked
 
     private void textcarikelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textcarikelasActionPerformed
@@ -4519,20 +4728,6 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
 
     private void tnominalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tnominalKeyReleased
         String text = tnominal.getText();
-        try {
-            // mengambil nilai dari textfield pertama
-            int angka = Integer.parseInt(tnominal.getText());
-
-            // melakukan perhitungan
-            int hasil = angka * 6;
-
-            // menampilkan hasil perhitungan di textfield kedua
-            totalnom.setText(Integer.toString(hasil));
-
-        } catch (NumberFormatException e) {
-            // jika input bukan angka, tampilkan pesan error
-            totalnom.setText("Error: Masukkan angka");
-        }
         if (text.length() > 7) {
             JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 7.");
             String potongkarakter = text.substring(0, 7);
@@ -4557,10 +4752,12 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
 
     private void backsppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backsppMouseClicked
         resetForm();
+        id_otomatisspp();
     }//GEN-LAST:event_backsppMouseClicked
 
     private void jLabel78MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel78MouseClicked
         resetFormkelas();
+        id_otomatis();
     }//GEN-LAST:event_jLabel78MouseClicked
 
     private void backssiwaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backssiwaMouseClicked
@@ -4722,8 +4919,201 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     }//GEN-LAST:event_totalnomKeyReleased
 
     private void boxlevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxlevelActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_boxlevelActionPerformed
+
+    private void tnominalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tnominalKeyPressed
+
+        try {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                int total, nominal;
+                // mengambil nilai dari textfield pertama
+                nominal = Integer.parseInt(tnominal.getText());
+                // melakukan perhitungan
+                total = nominal * 6;
+                // menampilkan hasil perhitungan di textfield kedua
+                totalnom.setText("" + total);
+                totalnom.requestFocus();
+            }
+        } catch (NumberFormatException e) {
+            // jika input bukan angka, tampilkan pesan error
+            totalnom.setText("Error: Masukkan angka");
+        }
+    }//GEN-LAST:event_tnominalKeyPressed
+
+    private void ganjilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ganjilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ganjilActionPerformed
+
+    private void tid_petActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tid_petActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tid_petActionPerformed
+
+    private void tstatuspemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tstatuspemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tstatuspemActionPerformed
+
+    private void tangsurankeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tangsurankeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tangsurankeActionPerformed
+
+    private void btnsimpantransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsimpantransaksiActionPerformed
+        String nisnsiswa = tNisn.getText();
+        String namasiswa = tNama_siswa.getText();
+        String idspps = tJumlahbayar.getText();
+        String nKelas = tKelas.getText();
+        String idkelas = tIDKE.getText();
+        String IDSPP = lblidspp.getText();
+        String tahunajaran = tId_Angkatan.getText();
+        String id_tagihan = tid_tagihan.getText();
+
+        String total_tagihan1 = ttagihan.getText();
+        int jumlahbayarkan;
+        jumlahbayarkan = Integer.parseInt(tjmlygdi.getText());
+        int sisa_tagihan;
+        sisa_tagihan = Integer.parseInt(tsisatagihan.getText());
+        int angsuran_ke;
+        angsuran_ke = Integer.parseInt(tangsuranke.getText());
+        String status_bayar = tstatuspem.getText();
+
+        try {
+            String sql = "INSERT INTO tagihan VALUES('" + id_tagihan + "','"
+                    + nisnsiswa + "','"
+                    + namasiswa + "','"
+                    + idkelas + "','"
+                    + nKelas + "','"
+                    + IDSPP + "','"
+                    + jumlahbayarkan + "','"
+                    + total_tagihan1 + "','"
+                    + sisa_tagihan + "','"
+                    + angsuran_ke + "','"
+                    + status_bayar + "')";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+            tampiltabelrekapan();
+//            refresh_formbayar();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+
+    }//GEN-LAST:event_btnsimpantransaksiActionPerformed
+
+    private void tjmlygdiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tjmlygdiKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int total, nominal, jumlah_bayar;
+            nominal = Integer.parseInt(ttagihan.getText());
+            jumlah_bayar = Integer.parseInt(tjmlygdi.getText());
+            total = nominal - jumlah_bayar;
+
+            tsisatagihan.setText("" + total);
+            id_otomatistagihan();
+            tsisatagihan.requestFocus();
+        }
+    }//GEN-LAST:event_tjmlygdiKeyPressed
+
+    private void tIDKEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tIDKEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tIDKEActionPerformed
+
+    private void tsisatagihanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tsisatagihanKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int sisa_tagihan, nominaltotaltagihan, jumlahdibayarkan;
+            nominaltotaltagihan = Integer.parseInt(ttagihan.getText());
+            jumlahdibayarkan = Integer.parseInt(tjmlygdi.getText());
+            sisa_tagihan = Integer.parseInt(tsisatagihan.getText());
+            if (sisa_tagihan == 0) {
+                tstatuspem.setText("Lunas");
+                ttagihan.setEnabled(false);
+            } else {
+                if (sisa_tagihan < nominaltotaltagihan) {
+                    tstatuspem.setText("Belum Lunas");
+                }
+            }
+            sisa_tagihan = nominaltotaltagihan - jumlahdibayarkan;
+            tsisatagihan.setText("" + sisa_tagihan);
+        } else {
+        }
+    }//GEN-LAST:event_tsisatagihanKeyPressed
+
+    private void tjmlygdiFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tjmlygdiFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tjmlygdiFocusGained
+
+    private void simpan_pembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpan_pembayaranActionPerformed
+        String nisnsiswa = tNisn.getText();
+        String idpetugas = tid_pet.getText();
+
+        String namasiswa = tNama_siswa.getText();
+        String idspps = tJumlahbayar.getText();
+        String nKelas = tKelas.getText();
+        String idkelas = tIDKE.getText();
+        String IDSPP = lblidspp.getText();
+        String tahunajaran = tId_Angkatan.getText();
+        String id_transaksi = tNo_Transaki.getText();
+        String semester = "";
+        if (ganjil.isSelected()) {
+            semester += "Ganjil";
+        } else if (genap.isSelected()) {
+            semester += "genap";
+        }
+
+        String total_tagihan1 = ttagihan.getText();
+        int jumlahbayarkan;
+        jumlahbayarkan = Integer.parseInt(tjmlygdi.getText());
+        int sisa_tagihan;
+        sisa_tagihan = Integer.parseInt(tsisatagihan.getText());
+        int angsuran_ke;
+        angsuran_ke = Integer.parseInt(tangsuranke.getText());
+        String status_bayar = tstatuspem.getText();
+
+        String tampiltgl = "YYYY-MM-DD";
+        SimpleDateFormat dfm = new SimpleDateFormat(tampiltgl);
+
+        String TANGGALBAYAR;
+        TANGGALBAYAR = String.valueOf(dfm);
+        TANGGALBAYAR = (tTanggal.getText());
+        try {
+            String sql = "INSERT INTO pembayaran VALUES('" + id_transaksi + "','"
+                    + idpetugas + "','"
+                    + nisnsiswa + "','"
+                    + idkelas + "','"
+                    + TANGGALBAYAR + "','"
+                    + semester + "','"
+                    + jumlahbayarkan + "','"
+                    + IDSPP + "','"
+                    + sisa_tagihan + "')";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(rootPane, "Berhasil");
+            tampiltabelpembayaran();
+            refresh_formbayar();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_simpan_pembayaranActionPerformed
+
+    private void tabeltagihanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabeltagihanMouseClicked
+     ttagihan.setText(tabeltagihan.getValueAt(tabeltagihan.getSelectedRow(), 8).toString());
+    }//GEN-LAST:event_tabeltagihanMouseClicked
+
+    private void ttagihanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ttagihanKeyPressed
+    int sisa_tagihan,totaltagihan,jumlahdibayarkan;
+    totaltagihan= Integer.parseInt(ttagihan.getText());
+    if(totaltagihan==0){
+        JOptionPane.showMessageDialog(null, "Anda Tidak bisa Melakukan Pembayaran");
+        ttagihan.setEnabled(false);
+        tjmlygdi.setEnabled(false);
+        tsisatagihan.setEnabled(false);
+    }else {
+        JOptionPane.showMessageDialog(null, "Anda bisa Melakukan Pembayaran");
+        ttagihan.setEnabled(true);
+    }
+    }//GEN-LAST:event_ttagihanKeyPressed
 
     /**
      * @param args the command line arguments
@@ -4817,6 +5207,8 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     private javax.swing.JButton btampilkelas1;
     private javax.swing.JButton btneditsis;
     private javax.swing.JButton btnhapussis;
+    private javax.swing.JButton btnsimpantransaksi;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField cari;
     private javax.swing.JTextField caridataspp;
     private javax.swing.JTextField caripetu;
@@ -4827,6 +5219,8 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     private javax.swing.JComboBox<String> comboidspp1;
     private javax.swing.JLabel distokelas;
     private javax.swing.JLabel distopetugas;
+    private javax.swing.JCheckBox ganjil;
+    private javax.swing.JCheckBox genap;
     public javax.swing.JLabel greating;
     public javax.swing.JLabel greating1;
     private javax.swing.JLabel hover;
@@ -4948,6 +5342,7 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane15;
     private javax.swing.JScrollPane jScrollPane16;
+    private javax.swing.JScrollPane jScrollPane17;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -4958,7 +5353,6 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField6;
@@ -4968,14 +5362,22 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     private com.k33ptoo.components.KButton kButton4;
     private com.k33ptoo.components.KButton kButton5;
     private com.k33ptoo.components.KButton kButton6;
+    private javax.swing.JLabel lblidspp;
     public final javax.swing.JButton lihatdata = new javax.swing.JButton();
     public final javax.swing.JButton lihatdata1 = new javax.swing.JButton();
     public final javax.swing.JButton lihatdata2 = new javax.swing.JButton();
     public final javax.swing.JButton lihatdata3 = new javax.swing.JButton();
     private javax.swing.JLabel ljam;
     private javax.swing.JLabel ljam1;
+    private javax.swing.JLabel lle;
+    private javax.swing.JLabel llev;
+    private javax.swing.JLabel lnperbulan;
+    private javax.swing.JLabel lsemes;
     private javax.swing.JLabel ltgl;
     private javax.swing.JLabel ltgl1;
+    private javax.swing.JLabel lttg;
+    private javax.swing.JLabel lttg1;
+    private javax.swing.JLabel lttg2;
     public javax.swing.JPanel mainpanel;
     public javax.swing.JPanel mainpanel1;
     private javax.swing.JLabel namasiswa;
@@ -4988,20 +5390,20 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     public javax.swing.JLabel namauser1;
     private java.awt.Panel panel1;
     private java.awt.Panel panel2;
+    private javax.swing.JButton simpan_pembayaran;
     public javax.swing.JLabel siswa;
     public javax.swing.JLabel siswa1;
-    private javax.swing.JLabel tAngkatan;
+    private javax.swing.JTextField tIDKE;
     private javax.swing.JTextField tId_Angkatan;
-    private javax.swing.JTextField tId_petugas;
     private javax.swing.JTextField tJumlahbayar;
     private javax.swing.JTextField tKelas;
     private javax.swing.JTextField tNama_siswa;
     private javax.swing.JTextField tNisn;
     private javax.swing.JTextField tNo_Transaki;
-    private javax.swing.JLabel tPetugas;
     private javax.swing.JTextField tTanggal;
     private javax.swing.JTable tabelkelas;
     private javax.swing.JTable tabelkelas1;
+    private javax.swing.JTable tabelpembayaran;
     private javax.swing.JTable tabelpetugas;
     private javax.swing.JTable tabelpetugas1;
     private javax.swing.JTable tabelsiswamaster;
@@ -5009,6 +5411,7 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     private javax.swing.JTable tabelsiswapembayaran;
     private javax.swing.JTable tabelspp;
     private javax.swing.JTable tabelspp1;
+    private javax.swing.JTable tabeltagihan;
     public javax.swing.JTextArea talamatsiswa;
     public javax.swing.JTextArea talamatsiswa1;
     public javax.swing.JTextField tampidspp;
@@ -5016,16 +5419,22 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     public javax.swing.JTextField tampilidkelas;
     public javax.swing.JTextField tampilidkelas1;
     private javax.swing.JLabel tampilsiswa;
+    private javax.swing.JTextField tangsuranke;
     private javax.swing.JTextField textcarikelas;
+    private javax.swing.JTextField tid_pet;
+    private javax.swing.JTextField tid_tagihan;
     private javax.swing.JTextField tidkelas;
     private javax.swing.JTextField tidkelas1;
     private javax.swing.JTextField tidpetugas;
     private javax.swing.JTextField tidpetugas1;
     private javax.swing.JTextField tidspp;
     private javax.swing.JTextField tidspp1;
+    private javax.swing.JTextField tjmlygdi;
     private javax.swing.JTextField tkom;
     private javax.swing.JTextField tkom1;
+    private javax.swing.JTextField tnama_petugas;
     private javax.swing.JLabel tnama_siswastatus;
+    private javax.swing.JLabel tnama_siswastatus1;
     private javax.swing.JTextField tnamakelas;
     private javax.swing.JTextField tnamakelas1;
     private javax.swing.JTextField tnamapetugas;
@@ -5049,6 +5458,9 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     private javax.swing.JTextField totalnom;
     private javax.swing.JPasswordField tpasspetu;
     private javax.swing.JPasswordField tpasspetu1;
+    private javax.swing.JTextField tsisatagihan;
+    private javax.swing.JTextField tstatuspem;
+    private javax.swing.JTextField ttagihan;
     private javax.swing.JTextField ttahun;
     private javax.swing.JTextField ttahun1;
     public javax.swing.JTextField ttelesiswa;
@@ -5059,7 +5471,13 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     private javax.swing.JTextField tuserpetugas1;
     private javax.swing.JTextField txtcarisis;
     // End of variables declaration//GEN-END:variables
- public void resetFormsiswa() {
+ public void tampilpetpadapem() {
+        lle.setText(level);
+        tnama_petugas.setText(nama);
+        tid_pet.setText(id);
+    }
+
+    public void resetFormsiswa() {
         tnisnsiswa.setText("");
         tnissiswa.setText("");
         tnamasiswas.setText("");
@@ -5077,10 +5495,12 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
         tidspp.setText("");
         ttahun.setText("");
         tnominal.setText("");
+        totalnom.setText("");
+        cgannep.setSelectedItem("--pilih--");
         tablespp();
 
         bsimpanspp.setEnabled(true);
-        tidspp.setEnabled(true);
+        tidspp.setEnabled(false);
         tidspp.setText("");
         bsimpanspp.setVisible(true);
     }
@@ -5100,7 +5520,7 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
         tidpetugas.setText("");
         tuserpetugas.setText("");
         tpasspetu.setText("");
-        tnamakelas.setText("");
+        tnamapetugas.setText("");
         ttelp.setText("");
         boxlevel.setSelectedItem("pilih");
 
@@ -5111,20 +5531,28 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
     }
 
     private void carispp() {
-        String[] judul = {"ID_SPP", "ANGAKTAN-TAHUN", "NOMINAL"};
+        String[] judul = {"ID_SPP", "ANGAKTAN-TAHUN", "NOMINAL PERBULAN", "SEMESTER", "TOTAL NOMINAL SEMESTER"};
         DefaultTableModel model = new DefaultTableModel(judul, 0);
         tabelspp.setModel(model);
         try {
-            String sql = "SELECT * FROM spp WHERE Id_spp LIKE '%" + caridataspp.getText() + "%' OR tahun LIKE '%" + caridataspp.getText() + "%' OR nominal LIKE '%" + caridataspp.getText() + "%'";
+            String sql = "SELECT * FROM spp WHERE Id_spp LIKE '%" + caridataspp.getText()
+                    + "%' OR tahun_ajaran LIKE '%" + caridataspp.getText()
+                    + "%' OR nominal_perbulan LIKE '%" + caridataspp.getText()
+                    + "%' OR semester LIKE '%" + caridataspp.getText()
+                    + "%' OR total_nominal_semester LIKE '%" + caridataspp.getText()
+                    + "%'";
+
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             rs = con.createStatement().executeQuery(sql);
 
             while (rs.next()) {
                 String idspp = rs.getString("Id_spp");
-                String tahun = rs.getString("tahun");
-                String nom = rs.getString("nominal");
-                String[] data = {idspp, tahun, nom};
+                String tahun = rs.getString("tahun_ajaran");
+                String nom = rs.getString("nominal_perbulan");
+                String sme = rs.getString("semester");
+                String total1sem = rs.getString("total_nominal_semester");
+                String[] data = {idspp, tahun, nom, sme, total1sem};
                 model.addRow(data);
             }
         } catch (Exception e) {
@@ -5196,6 +5624,25 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
         }
     }
 
+    private void refresh_formbayar() {
+        tNo_Transaki.setText("");
+        tNisn.setText("");
+        tNama_siswa.setText("");
+        tKelas.setText("");
+        tIDKE.setText("");
+        tId_Angkatan.setText("");
+        lblidspp.setText("");
+        tJumlahbayar.setText("");
+        tid_tagihan.setText("");
+        ttagihan.setText("");
+        tjmlygdi.setText("");
+        tsisatagihan.setText("");
+        tstatuspem.setText("");
+        tangsuranke.setText("");
+        buttonGroup1.clearSelection();
+
+    }
+
     private void carikelas() {
         String[] judul = {"ID_Kelas", "NAMA KELAS", "KOMPETENSI KEAHLIAN"};
         DefaultTableModel model = new DefaultTableModel(judul, 0);
@@ -5215,6 +5662,67 @@ if (tnisnsiswa.getText().equals("") || tnissiswa.getText().equals("") || tnamasi
             }
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+
+    public void tampiltabelpembayaran() {
+        String[] kolompembayaran2
+                = {"ID PEMBAYARAN", "ID PETUGAS", "NISN", "ID KELAS", "TANGGAL BAYAR", "SEMESTER", "JUMLAH DI BAYAR", "ID SPP", "SISA TAGIHAN"};
+        DefaultTableModel model = new DefaultTableModel(kolompembayaran2, 0);
+        tabelpembayaran.setModel(model);
+
+        try {
+            String sql = "SELECT * FROM pembayaran";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            rs = con.createStatement().executeQuery(sql);
+
+            while (rs.next()) {
+                String[] baris = {
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4),
+                    rs.getString(5),
+                    rs.getString(6),
+                    rs.getString(7),
+                    rs.getString(8),
+                    rs.getString(9)
+                };
+                model.addRow(baris);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void tampiltabelrekapan() {
+        String[] kolomrekapan2
+                = {"ID REKAPAN", "NISN", "NAMA", "ID KELAS", "NAMA KELAS", "ID SPP", "NOMINAL", "JUMLAH BAYAR", "SISA TAGIHAN", "ANGSURAN KE", "STATUS PEMBAYARAN"};
+        DefaultTableModel model = new DefaultTableModel(kolomrekapan2, 0);
+        tabeltagihan.setModel(model);
+
+        try {
+            String sql = "SELECT * FROM tagihan";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            rs = con.createStatement().executeQuery(sql);
+
+            while (rs.next()) {
+                String[] baris = {
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4),
+                    rs.getString(5),
+                    rs.getString(6),
+                    rs.getString(7),
+                    rs.getString(8),
+                    rs.getString(9),
+                    rs.getString(10),
+                    rs.getString(11),};
+                model.addRow(baris);
+            }
+        } catch (Exception e) {
         }
     }
 }
