@@ -2320,9 +2320,9 @@ public class tampilan extends javax.swing.JFrame {
         panel1.add(bkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 448, 150, 30));
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setForeground(new java.awt.Color(102, 102, 255));
         jLabel6.setText("Selamat Datang");
-        panel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 20, 110, 50));
+        panel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 110, 50));
 
         namauser.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         namauser.setForeground(new java.awt.Color(255, 255, 255));
@@ -3973,9 +3973,7 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_tampidsppActionPerformed
 
     private void lihatdata2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lihatdata2ActionPerformed
-        spp fspp = new spp();
-        fspp.setVisible(true);
-        fspp.tabelsppsen.setEnabled(true);
+        
     }//GEN-LAST:event_lihatdata2ActionPerformed
 
     private void tidkelasFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tidkelasFocusLost
@@ -4934,7 +4932,7 @@ public class tampilan extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
