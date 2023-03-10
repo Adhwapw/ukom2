@@ -95,7 +95,7 @@ public class tampilan_awal extends javax.swing.JFrame {
     }//GEN-LAST:event_SISWA1MouseEntered
 
     private void SISWAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SISWAMouseClicked
-        new loginbuatuser().setVisible(true);
+        new Loginadmin1().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_SISWAMouseClicked
 

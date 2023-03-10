@@ -822,26 +822,6 @@ public class tampilan extends javax.swing.JFrame {
         textcarikelas = new javax.swing.JTextField();
         bcarikelas = new javax.swing.JButton();
         jLabel78 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        tnis = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        tnis1 = new javax.swing.JTextField();
-        tnis2 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        kButton1 = new com.k33ptoo.components.KButton();
-        kButton2 = new com.k33ptoo.components.KButton();
-        jLabel8 = new javax.swing.JLabel();
-        kButton3 = new com.k33ptoo.components.KButton();
-        jLabel10 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        tnis3 = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         jFrame1.setUndecorated(true);
@@ -3479,177 +3459,9 @@ public class tampilan extends javax.swing.JFrame {
 
         getContentPane().add(mainpanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 60, 1210, 710));
 
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        tnis.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tnis.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        tnis.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tnisActionPerformed(evt);
-            }
-        });
-        jPanel3.add(tnis, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jLabel1.setText("NISN");
-        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jLabel2.setText("NIS");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        tnis1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tnis1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        tnis1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tnis1ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(tnis1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        tnis2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tnis2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        tnis2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tnis2ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(tnis2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jLabel3.setText("NAMA");
-        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jLabel4.setText("ALAMAT");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jTextArea1.setRows(3);
-        jScrollPane2.setViewportView(jTextArea1);
-
-        jPanel3.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        kButton1.setText("Simpan");
-        kButton1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jPanel3.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        kButton2.setText("Edit");
-        kButton2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        kButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kButton2ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jLabel8.setText("NO TELP");
-        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        kButton3.setText("Hapus");
-        kButton3.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        kButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kButton3ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(kButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jLabel10.setText("ID SPP");
-        jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        tnis3.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tnis3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        tnis3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tnis3ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(tnis3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "NISN", "NIS", "NAMA", "ID KELAS", "ALAMAT", "NO TELP", "ID SPP"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                true, true, true, false, true, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.setGridColor(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setViewportView(jTable1);
-
-        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 58, -1, 600));
-
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void tnisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnisActionPerformed
-        String text = tnis.getText();
-        if (text.length() > 10) {
-            JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 10.");
-        }
-        try {
-            int value = Integer.parseInt(tnis.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid number.");
-        }
-    }//GEN-LAST:event_tnisActionPerformed
-
-    private void tnis1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnis1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tnis1ActionPerformed
-
-    private void tnis2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnis2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tnis2ActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void kButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_kButton2ActionPerformed
-
-    private void tnis3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnis3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tnis3ActionPerformed
-
-    private void kButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_kButton3ActionPerformed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void bsppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bsppMouseClicked
 //        new spp().setVisible(true);
@@ -3995,11 +3807,7 @@ public class tampilan extends javax.swing.JFrame {
         if (text.length() > 13) {
             JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 12.");
         }
-        try {
-            int value = Integer.parseInt(tnis.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid number.");
-        }
+        
     }//GEN-LAST:event_tnamapetugasActionPerformed
 
     private void ttelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ttelpActionPerformed
@@ -5098,21 +4906,21 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_simpan_pembayaranActionPerformed
 
     private void tabeltagihanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabeltagihanMouseClicked
-     ttagihan.setText(tabeltagihan.getValueAt(tabeltagihan.getSelectedRow(), 8).toString());
+        ttagihan.setText(tabeltagihan.getValueAt(tabeltagihan.getSelectedRow(), 8).toString());
     }//GEN-LAST:event_tabeltagihanMouseClicked
 
     private void ttagihanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ttagihanKeyPressed
-    int sisa_tagihan,totaltagihan,jumlahdibayarkan;
-    totaltagihan= Integer.parseInt(ttagihan.getText());
-    if(totaltagihan==0){
-        JOptionPane.showMessageDialog(null, "Anda Tidak bisa Melakukan Pembayaran");
-        ttagihan.setEnabled(false);
-        tjmlygdi.setEnabled(false);
-        tsisatagihan.setEnabled(false);
-    }else {
-        JOptionPane.showMessageDialog(null, "Anda bisa Melakukan Pembayaran");
-        ttagihan.setEnabled(true);
-    }
+        int sisa_tagihan, totaltagihan, jumlahdibayarkan;
+        totaltagihan = Integer.parseInt(ttagihan.getText());
+        if (totaltagihan == 0) {
+            JOptionPane.showMessageDialog(null, "Anda Tidak bisa Melakukan Pembayaran");
+            ttagihan.setEnabled(false);
+            tjmlygdi.setEnabled(false);
+            tsisatagihan.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Anda bisa Melakukan Pembayaran");
+            ttagihan.setEnabled(true);
+        }
     }//GEN-LAST:event_ttagihanKeyPressed
 
     /**
@@ -5226,13 +5034,9 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JLabel hover;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JFrame jFrame1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -5242,7 +5046,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
@@ -5252,7 +5055,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
@@ -5263,7 +5065,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
@@ -5305,7 +5106,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel76;
     private javax.swing.JLabel jLabel77;
     private javax.swing.JLabel jLabel78;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel14;
@@ -5320,7 +5120,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
@@ -5334,7 +5133,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel41;
     private javax.swing.JPanel jPanel42;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
@@ -5343,7 +5141,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane15;
     private javax.swing.JScrollPane jScrollPane16;
     private javax.swing.JScrollPane jScrollPane17;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -5351,14 +5148,9 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField6;
-    private com.k33ptoo.components.KButton kButton1;
-    private com.k33ptoo.components.KButton kButton2;
-    private com.k33ptoo.components.KButton kButton3;
     private com.k33ptoo.components.KButton kButton4;
     private com.k33ptoo.components.KButton kButton5;
     private com.k33ptoo.components.KButton kButton6;
@@ -5441,10 +5233,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JTextField tnamapetugas1;
     public javax.swing.JTextField tnamasiswas;
     public javax.swing.JTextField tnamasiswas1;
-    private javax.swing.JTextField tnis;
-    private javax.swing.JTextField tnis1;
-    private javax.swing.JTextField tnis2;
-    private javax.swing.JTextField tnis3;
     private javax.swing.JTextField tnis4;
     private javax.swing.JTextField tnis5;
     private javax.swing.JTextField tnis6;
@@ -5640,7 +5428,6 @@ public class tampilan extends javax.swing.JFrame {
         tstatuspem.setText("");
         tangsuranke.setText("");
         buttonGroup1.clearSelection();
-
     }
 
     private void carikelas() {

@@ -21,7 +21,7 @@ import javax.swing.DefaultListCellRenderer;
  *
  * @author Adhwa
  */
-public class loginbuatuser extends javax.swing.JFrame {
+public class Loginadmin1 extends javax.swing.JFrame {
 
     public JButton btest = new javax.swing.JButton();
     public JLabel siswa = new javax.swing.JLabel();
@@ -40,7 +40,7 @@ public class loginbuatuser extends javax.swing.JFrame {
 //    koneksi
     private Connection conn = new koneksi().connect();
 
-    public loginbuatuser() {
+    public Loginadmin1() {
         initComponents();
         clevel.setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -396,31 +396,32 @@ public static void main(String args[]) {
 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(loginbuatuser.class  
+            java.util.logging.Logger.getLogger(Loginadmin1.class  
 
 .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
 } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(loginbuatuser.class  
+            java.util.logging.Logger.getLogger(Loginadmin1.class  
 
 .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
 } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(loginbuatuser.class  
+            java.util.logging.Logger.getLogger(Loginadmin1.class  
 
 .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
 } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(loginbuatuser.class  
+            java.util.logging.Logger.getLogger(Loginadmin1.class  
 
 .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new loginbuatuser().setVisible(true);
+                new Loginadmin1().setVisible(true);
             }
         });
     }
