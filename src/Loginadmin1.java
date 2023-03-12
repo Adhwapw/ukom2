@@ -202,6 +202,9 @@ public class Loginadmin1 extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Lupa password");
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel2MouseEntered(evt);
             }
@@ -232,10 +235,12 @@ public class Loginadmin1 extends javax.swing.JFrame {
         if (tuser1.getText().trim().isEmpty() || tpass.getText().trim().isEmpty()) {
 //            JOptionPane.showMessageDialog(null, "masih ada kolom yang kosong bestiee");
             tuser1.setText("username kosong");
-            tuser1.setText("password kosong");
+            tpass.setText("password kosong");
 
         } else if (tuser1.getText().trim().isEmpty()) {
             tuser1.setText("username kosong");
+        } else if (tpass.getText().trim().isEmpty()) {
+            tpass.setText("password kosong");
         }
         try {
 
@@ -313,7 +318,10 @@ public class Loginadmin1 extends javax.swing.JFrame {
     private void tuser1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tuser1FocusLost
         if (tuser1.getText().equals("")) {
             tuser1.setText("enter username");
+        }else if(tuser1.getText().equals("username kosong")){
+            tuser1.setText("");
         }
+            
     }//GEN-LAST:event_tuser1FocusLost
 
     private void hoverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hoverMouseClicked
@@ -353,9 +361,9 @@ public class Loginadmin1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseExited
 
     private void tpassFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tpassFocusGained
-        if (tpass.getText().equals("masukan password")) {
-            tpass.setText("");
-        }
+//        if (tpass.getText().equals("masukan password")) {
+//            tpass.setText("");
+//        }
     }//GEN-LAST:event_tpassFocusGained
 
     private void clevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clevelActionPerformed
@@ -375,13 +383,17 @@ public class Loginadmin1 extends javax.swing.JFrame {
     }//GEN-LAST:event_tpassKeyPressed
 
     private void clevelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_clevelFocusGained
-         clevel.showPopup();
+        clevel.showPopup();
     }//GEN-LAST:event_clevelFocusGained
 
-/**
- * @param args the command line arguments
- */
-public static void main(String args[]) {
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        new gantipass().setVisible(true);
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -393,27 +405,23 @@ public static void main(String args[]) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Loginadmin1.class  
+            java.util.logging.Logger.getLogger(Loginadmin1.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Loginadmin1.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Loginadmin1.class  
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Loginadmin1.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Loginadmin1.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Loginadmin1.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Loginadmin1.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

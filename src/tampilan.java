@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,6 +62,7 @@ public class tampilan extends javax.swing.JFrame {
         tampiltotalpetugas();
         id_otomatis();
         id_otomatisspp();
+        id_otomatistagihan();
         tabelSiswapem();
         tampiltabelpembayaran();
         tampiltabelrekapan();
@@ -129,9 +131,10 @@ public class tampilan extends javax.swing.JFrame {
             String sql = "select * from tagihan order by Id_tagihan desc";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            tid_tagihan.setEnabled(false);
+            tidtagihan.setEnabled(false);
             if (rs.next()) {
                 String nourut = rs.getString("Id_tagihan").substring(1);
+                System.out.println(nourut);
                 String an = "" + (Integer.parseInt(nourut) + 1);
                 String nol = "";
                 if (an.length() == 1) {
@@ -141,13 +144,16 @@ public class tampilan extends javax.swing.JFrame {
                 } else if (an.length() == 3) {
                     nol = "";
                 }
-                tid_tagihan.setText("T" + nol + an);
+                tidtagihan.setText("T" + nol + an);
+                tidtagihan.setEnabled(false);
 
             } else {
-                tid_tagihan.setText("T001");
+                tidtagihan.setText("T001");
+                tidtagihan.setEnabled(false);
             }
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -720,29 +726,26 @@ public class tampilan extends javax.swing.JFrame {
         backssiwa = new javax.swing.JLabel();
         Ppetugas = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
-        jPanel15 = new javax.swing.JPanel();
-        jLabel27 = new javax.swing.JLabel();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel28 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
-        jLabel32 = new javax.swing.JLabel();
-        jLabel33 = new javax.swing.JLabel();
-        tidpetugas = new javax.swing.JTextField();
-        tuserpetugas = new javax.swing.JTextField();
-        tpasspetu = new javax.swing.JPasswordField();
-        tnamapetugas = new javax.swing.JTextField();
-        ttelp = new javax.swing.JTextField();
-        boxlevel = new javax.swing.JComboBox<>();
-        bsimpanpetu = new javax.swing.JButton();
-        btampil = new javax.swing.JButton();
-        beditpetugas = new javax.swing.JButton();
-        bhapuspetugas = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tabelpetugas = new javax.swing.JTable();
         caripetu = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        tidpetugas = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        tuserpetugas = new javax.swing.JTextField();
+        ttelp = new javax.swing.JTextField();
+        tnamapetugas = new javax.swing.JTextField();
+        tpasspetu = new javax.swing.JPasswordField();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        boxlevel = new javax.swing.JComboBox<>();
+        beditpetugas = new javax.swing.JButton();
+        bsimpanpetu = new javax.swing.JButton();
+        bhapuspetugas = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         Psppp = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tabelspp = new javax.swing.JTable();
@@ -779,7 +782,6 @@ public class tampilan extends javax.swing.JFrame {
         tJumlahbayar = new javax.swing.JTextField();
         namasiswa1 = new javax.swing.JLabel();
         namasiswa2 = new javax.swing.JLabel();
-        namasiswa3 = new javax.swing.JLabel();
         namasiswa4 = new javax.swing.JLabel();
         lnperbulan = new javax.swing.JLabel();
         jScrollPane16 = new javax.swing.JScrollPane();
@@ -787,9 +789,7 @@ public class tampilan extends javax.swing.JFrame {
         lsemes = new javax.swing.JLabel();
         ganjil = new javax.swing.JCheckBox();
         genap = new javax.swing.JCheckBox();
-        namasiswa5 = new javax.swing.JLabel();
         tid_pet = new javax.swing.JTextField();
-        llev = new javax.swing.JLabel();
         lttg = new javax.swing.JLabel();
         ttagihan = new javax.swing.JTextField();
         lttg1 = new javax.swing.JLabel();
@@ -803,8 +803,14 @@ public class tampilan extends javax.swing.JFrame {
         jScrollPane17 = new javax.swing.JScrollPane();
         tabeltagihan = new javax.swing.JTable();
         tIDKE = new javax.swing.JTextField();
-        tid_tagihan = new javax.swing.JTextField();
+        tidtagihan = new javax.swing.JTextField();
         simpan_pembayaran = new javax.swing.JButton();
+        tcaripembayaran = new javax.swing.JTextField();
+        tcaritagihan = new javax.swing.JTextField();
+        btntampilnota = new javax.swing.JButton();
+        btncetak = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         backpembayaran = new javax.swing.JLabel();
         Pkelas = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -2213,7 +2219,7 @@ public class tampilan extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backhead.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/header.png"))); // NOI18N
         jPanel1.add(jLabel5);
         jLabel5.setBounds(0, 0, 1370, 60);
 
@@ -2303,7 +2309,7 @@ public class tampilan extends javax.swing.JFrame {
                 bpembayaranMouseClicked(evt);
             }
         });
-        panel1.add(bpembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 140, 38));
+        panel1.add(bpembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 130, 38));
 
         bkelas.setBackground(new java.awt.Color(153, 153, 153));
         bkelas.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
@@ -2317,7 +2323,7 @@ public class tampilan extends javax.swing.JFrame {
                 bkelasMouseClicked(evt);
             }
         });
-        panel1.add(bkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 448, 150, 30));
+        panel1.add(bkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 448, 140, 30));
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(102, 102, 255));
@@ -2392,11 +2398,11 @@ public class tampilan extends javax.swing.JFrame {
         greating.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         Phome.add(greating, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 560, 80));
 
-        ltgl.setFont(new java.awt.Font("Ravie", 1, 14)); // NOI18N
+        ltgl.setFont(new java.awt.Font("Nirmala UI", 1, 20)); // NOI18N
         ltgl.setText("sd");
         Phome.add(ltgl, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 100, 218, -1));
 
-        ljam.setFont(new java.awt.Font("Rockwell", 1, 14)); // NOI18N
+        ljam.setFont(new java.awt.Font("Rockwell", 1, 20)); // NOI18N
         ljam.setText("sd");
         Phome.add(ljam, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 150, 218, -1));
 
@@ -2408,12 +2414,12 @@ public class tampilan extends javax.swing.JFrame {
         tampilsiswa.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         tampilsiswa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tampilsiswa.setText("no");
-        Phome.add(tampilsiswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 340, 100, 100));
+        Phome.add(tampilsiswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 340, 150, 100));
 
         distokelas.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         distokelas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         distokelas.setText("no");
-        Phome.add(distokelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, -1, 100));
+        Phome.add(distokelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(414, 340, 140, 100));
 
         jLabel9.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -2423,12 +2429,12 @@ public class tampilan extends javax.swing.JFrame {
         distopetugas.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         distopetugas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         distopetugas.setText("no");
-        Phome.add(distopetugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 340, 50, 100));
+        Phome.add(distopetugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 340, 160, 100));
 
         jLabel74.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         jLabel74.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel74.setText("no");
-        Phome.add(jLabel74, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 340, -1, 100));
+        Phome.add(jLabel74, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 340, 160, 100));
 
         jLabel11.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -2605,6 +2611,7 @@ public class tampilan extends javax.swing.JFrame {
         Psiswa.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 40, -1));
 
         bsimpansiswa.setBackground(new java.awt.Color(51, 255, 51));
+        bsimpansiswa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-save-30.png"))); // NOI18N
         bsimpansiswa.setText("Simpan");
         bsimpansiswa.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(51, 255, 51), new java.awt.Color(204, 255, 204), new java.awt.Color(102, 255, 102)));
         bsimpansiswa.addActionListener(new java.awt.event.ActionListener() {
@@ -2615,6 +2622,7 @@ public class tampilan extends javax.swing.JFrame {
         Psiswa.add(bsimpansiswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 540, 106, 32));
 
         btneditsis.setBackground(new java.awt.Color(255, 255, 102));
+        btneditsis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-pencil-25.png"))); // NOI18N
         btneditsis.setText("Edit");
         btneditsis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2624,13 +2632,14 @@ public class tampilan extends javax.swing.JFrame {
         Psiswa.add(btneditsis, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 540, 104, 32));
 
         btnhapussis.setBackground(new java.awt.Color(255, 51, 51));
+        btnhapussis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-remove-25.png"))); // NOI18N
         btnhapussis.setText("Hapus");
         btnhapussis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnhapussisActionPerformed(evt);
             }
         });
-        Psiswa.add(btnhapussis, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 580, 86, 36));
+        Psiswa.add(btnhapussis, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 580, 100, 36));
 
         talamatsiswa.setColumns(20);
         talamatsiswa.setRows(2);
@@ -2650,219 +2659,10 @@ public class tampilan extends javax.swing.JFrame {
 
         mainpanel.add(Psiswa, "card3");
 
-        Ppetugas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         jPanel14.setBackground(new java.awt.Color(153, 153, 255));
+        jPanel14.setLayout(null);
 
-        jPanel15.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel27.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel27.setText("Data Petugas");
-
-        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
-        jPanel15.setLayout(jPanel15Layout);
-        jPanel15Layout.setHorizontalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addGap(307, 307, 307)
-                .addComponent(jLabel27)
-                .addContainerGap(311, Short.MAX_VALUE))
-        );
-        jPanel15Layout.setVerticalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel27)
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
-
-        jLabel28.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jLabel28.setText("Id Petugas");
-
-        jLabel29.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jLabel29.setText("Username");
-
-        jLabel30.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jLabel30.setText("Password");
-
-        jLabel31.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jLabel31.setText("Nama Petugas");
-
-        jLabel32.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jLabel32.setText("No telepon");
-
-        jLabel33.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jLabel33.setText("Level");
-
-        tidpetugas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tidpetugas.setText("terisi otomatis tenang aja..");
-        tidpetugas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tidpetugasActionPerformed(evt);
-            }
-        });
-
-        tuserpetugas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tuserpetugas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tuserpetugasActionPerformed(evt);
-            }
-        });
-        tuserpetugas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tuserpetugasKeyPressed(evt);
-            }
-        });
-
-        tpasspetu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tpasspetu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tpasspetuActionPerformed(evt);
-            }
-        });
-
-        tnamapetugas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tnamapetugas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tnamapetugasActionPerformed(evt);
-            }
-        });
-
-        ttelp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ttelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ttelpActionPerformed(evt);
-            }
-        });
-        ttelp.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ttelpKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                ttelpKeyReleased(evt);
-            }
-        });
-
-        boxlevel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        boxlevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "pilih", "admin", "petugas" }));
-        boxlevel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boxlevelActionPerformed(evt);
-            }
-        });
-
-        bsimpanpetu.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        bsimpanpetu.setText("Simpan");
-        bsimpanpetu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bsimpanpetuActionPerformed(evt);
-            }
-        });
-
-        btampil.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        btampil.setText("Tampil");
-        btampil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btampilActionPerformed(evt);
-            }
-        });
-
-        beditpetugas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        beditpetugas.setText("Edit");
-        beditpetugas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                beditpetugasActionPerformed(evt);
-            }
-        });
-
-        bhapuspetugas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        bhapuspetugas.setText("Hapus");
-        bhapuspetugas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bhapuspetugasActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tidpetugas)
-                    .addComponent(tuserpetugas, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
-                    .addComponent(tpasspetu)
-                    .addComponent(tnamapetugas))
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(jLabel32)
-                        .addGap(18, 18, 18)
-                        .addComponent(ttelp, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel16Layout.createSequentialGroup()
-                                .addComponent(bsimpanpetu)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(beditpetugas))
-                            .addGroup(jPanel16Layout.createSequentialGroup()
-                                .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(54, 54, 54)
-                                .addComponent(boxlevel, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(42, 42, 42)
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(bhapuspetugas)
-                            .addComponent(btampil))
-                        .addGap(101, 101, 101))))
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel28)
-                            .addComponent(tidpetugas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel16Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(boxlevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel33)
-                                    .addComponent(btampil)))
-                            .addGroup(jPanel16Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel29)
-                                    .addComponent(tuserpetugas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tpasspetu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel30)))
-                    .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel32)
-                            .addComponent(ttelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tnamapetugas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel31)
-                    .addComponent(bsimpanpetu)
-                    .addComponent(beditpetugas)
-                    .addComponent(bhapuspetugas))
-                .addContainerGap(49, Short.MAX_VALUE))
-        );
+        jPanel17.setBackground(new java.awt.Color(204, 204, 255));
 
         tabelpetugas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2882,64 +2682,190 @@ public class tampilan extends javax.swing.JFrame {
         });
         jScrollPane6.setViewportView(tabelpetugas);
 
-        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
-        jPanel17.setLayout(jPanel17Layout);
-        jPanel17Layout.setHorizontalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
-        );
-        jPanel17Layout.setVerticalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
         caripetu.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 caripetuKeyReleased(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(81, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(caripetu, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(277, 277, 277))
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addGap(186, 186, 186)
+                        .addComponent(caripetu, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(caripetu, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        Ppetugas.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 920, 710));
+        jPanel14.add(jPanel17);
+        jPanel17.setBounds(200, 430, 799, 260);
+
+        jLabel28.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel28.setText("Id Petugas");
+        jPanel14.add(jLabel28);
+        jLabel28.setBounds(200, 170, 99, 19);
+
+        tidpetugas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tidpetugas.setText("terisi otomatis tenang aja..");
+        tidpetugas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tidpetugasActionPerformed(evt);
+            }
+        });
+        jPanel14.add(tidpetugas);
+        tidpetugas.setBounds(190, 210, 260, 30);
+
+        jLabel29.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel29.setText("Username");
+        jPanel14.add(jLabel29);
+        jLabel29.setBounds(200, 250, 99, 19);
+
+        jLabel30.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel30.setText("Password");
+        jPanel14.add(jLabel30);
+        jLabel30.setBounds(200, 330, 99, 19);
+
+        jLabel31.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel31.setText("Nama Petugas");
+        jPanel14.add(jLabel31);
+        jLabel31.setBounds(480, 170, 99, 19);
+
+        tuserpetugas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tuserpetugas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tuserpetugasActionPerformed(evt);
+            }
+        });
+        tuserpetugas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tuserpetugasKeyPressed(evt);
+            }
+        });
+        jPanel14.add(tuserpetugas);
+        tuserpetugas.setBounds(190, 280, 260, 30);
+
+        ttelp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ttelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ttelpActionPerformed(evt);
+            }
+        });
+        ttelp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ttelpKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                ttelpKeyReleased(evt);
+            }
+        });
+        jPanel14.add(ttelp);
+        ttelp.setBounds(470, 280, 220, 26);
+
+        tnamapetugas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tnamapetugas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tnamapetugasActionPerformed(evt);
+            }
+        });
+        tnamapetugas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tnamapetugasKeyPressed(evt);
+            }
+        });
+        jPanel14.add(tnamapetugas);
+        tnamapetugas.setBounds(470, 210, 220, 30);
+
+        tpasspetu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tpasspetu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tpasspetuActionPerformed(evt);
+            }
+        });
+        jPanel14.add(tpasspetu);
+        tpasspetu.setBounds(190, 360, 260, 26);
+
+        jLabel32.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel32.setText("No telepon");
+        jPanel14.add(jLabel32);
+        jLabel32.setBounds(490, 250, 77, 19);
+
+        jLabel33.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel33.setText("Level");
+        jPanel14.add(jLabel33);
+        jLabel33.setBounds(490, 330, 39, 19);
+
+        boxlevel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        boxlevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "pilih", "admin", "petugas" }));
+        boxlevel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxlevelActionPerformed(evt);
+            }
+        });
+        jPanel14.add(boxlevel);
+        boxlevel.setBounds(470, 360, 220, 26);
+
+        beditpetugas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        beditpetugas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-pencil-25.png"))); // NOI18N
+        beditpetugas.setText("Edit");
+        beditpetugas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beditpetugasActionPerformed(evt);
+            }
+        });
+        jPanel14.add(beditpetugas);
+        beditpetugas.setBounds(870, 230, 110, 40);
+
+        bsimpanpetu.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        bsimpanpetu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-save-30.png"))); // NOI18N
+        bsimpanpetu.setText("Simpan");
+        bsimpanpetu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bsimpanpetuActionPerformed(evt);
+            }
+        });
+        jPanel14.add(bsimpanpetu);
+        bsimpanpetu.setBounds(750, 230, 111, 37);
+
+        bhapuspetugas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        bhapuspetugas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-remove-25.png"))); // NOI18N
+        bhapuspetugas.setText("Hapus");
+        bhapuspetugas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bhapuspetugasActionPerformed(evt);
+            }
+        });
+        jPanel14.add(bhapuspetugas);
+        bhapuspetugas.setBounds(810, 300, 110, 40);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/petugasback.png"))); // NOI18N
+        jPanel14.add(jLabel1);
+        jLabel1.setBounds(0, 0, 1210, 710);
+
+        javax.swing.GroupLayout PpetugasLayout = new javax.swing.GroupLayout(Ppetugas);
+        Ppetugas.setLayout(PpetugasLayout);
+        PpetugasLayout.setHorizontalGroup(
+            PpetugasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, 1210, Short.MAX_VALUE)
+        );
+        PpetugasLayout.setVerticalGroup(
+            PpetugasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+        );
 
         mainpanel.add(Ppetugas, "card4");
 
@@ -2968,8 +2894,9 @@ public class tampilan extends javax.swing.JFrame {
         jScrollPane7.setViewportView(tabelspp);
 
         Psppp.add(jScrollPane7);
-        jScrollPane7.setBounds(226, 150, 730, 200);
+        jScrollPane7.setBounds(196, 150, 800, 200);
 
+        bhapusspp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-remove-25.png"))); // NOI18N
         bhapusspp.setText("Hapus");
         bhapusspp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -2982,8 +2909,9 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(bhapusspp);
-        bhapusspp.setBounds(710, 620, 90, 40);
+        bhapusspp.setBounds(690, 630, 100, 40);
 
+        beditspp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-pencil-25.png"))); // NOI18N
         beditspp.setText("Edit");
         beditspp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -2996,8 +2924,9 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(beditspp);
-        beditspp.setBounds(570, 620, 90, 40);
+        beditspp.setBounds(540, 630, 90, 40);
 
+        bsimpanspp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-save-30.png"))); // NOI18N
         bsimpanspp.setText("Simpan");
         bsimpanspp.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         bsimpanspp.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -3011,7 +2940,7 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(bsimpanspp);
-        bsimpanspp.setBounds(420, 620, 90, 40);
+        bsimpanspp.setBounds(380, 630, 90, 40);
 
         tnominal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3027,7 +2956,7 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(tnominal);
-        tnominal.setBounds(610, 560, 170, 40);
+        tnominal.setBounds(450, 580, 170, 40);
 
         ttahun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3043,7 +2972,7 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(ttahun);
-        ttahun.setBounds(610, 510, 170, 40);
+        ttahun.setBounds(450, 530, 170, 40);
 
         tidspp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3051,7 +2980,7 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(tidspp);
-        tidspp.setBounds(610, 460, 170, 40);
+        tidspp.setBounds(450, 480, 170, 40);
 
         totalnom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3064,26 +2993,26 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(totalnom);
-        totalnom.setBounds(850, 470, 170, 40);
+        totalnom.setBounds(660, 490, 170, 40);
 
         jLabel34.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel34.setText("ID SPP");
         Psppp.add(jLabel34);
-        jLabel34.setBounds(430, 470, 56, 19);
+        jLabel34.setBounds(350, 490, 56, 19);
 
         jLabel35.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel35.setText("Tahun");
         Psppp.add(jLabel35);
-        jLabel35.setBounds(430, 520, 56, 24);
+        jLabel35.setBounds(350, 540, 56, 24);
 
         jLabel36.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel36.setText("Nominal");
         Psppp.add(jLabel36);
-        jLabel36.setBounds(430, 570, 56, 20);
+        jLabel36.setBounds(350, 590, 56, 20);
 
         cgannep.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--pilih--", "ganjil", "genap" }));
         Psppp.add(cgannep);
-        cgannep.setBounds(860, 570, 110, 22);
+        cgannep.setBounds(660, 550, 170, 22);
 
         caridataspp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3096,20 +3025,21 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Psppp.add(caridataspp);
-        caridataspp.setBounds(640, 110, 170, 30);
+        caridataspp.setBounds(800, 110, 170, 30);
 
-        backspp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backspp.png"))); // NOI18N
-        backspp.setText("jLabel73");
+        backspp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/spp (1210 × 710 piksel).png"))); // NOI18N
         backspp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 backsppMouseClicked(evt);
             }
         });
         Psppp.add(backspp);
-        backspp.setBounds(0, 0, 1380, 710);
+        backspp.setBounds(0, 0, 1210, 710);
 
         mainpanel.add(Psppp, "card5");
 
+        Ppembayaran.setMinimumSize(new java.awt.Dimension(1210, 710));
+        Ppembayaran.setPreferredSize(new java.awt.Dimension(1210, 710));
         Ppembayaran.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         cari.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3117,7 +3047,7 @@ public class tampilan extends javax.swing.JFrame {
                 cariKeyReleased(evt);
             }
         });
-        Ppembayaran.add(cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 10, 110, 30));
+        Ppembayaran.add(cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 20, 110, 30));
 
         tabelsiswapembayaran.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -3137,50 +3067,47 @@ public class tampilan extends javax.swing.JFrame {
         });
         jScrollPane15.setViewportView(tabelsiswapembayaran);
 
-        Ppembayaran.add(jScrollPane15, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 520, 200));
+        Ppembayaran.add(jScrollPane15, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 70, 520, 200));
 
         jLabel76.setText("NO. Transaksi");
-        Ppembayaran.add(jLabel76, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 90, 20));
+        Ppembayaran.add(jLabel76, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 90, 20));
 
         jLabel77.setText("NISN");
-        Ppembayaran.add(jLabel77, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 90, 20));
+        Ppembayaran.add(jLabel77, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 90, 20));
 
         namasiswa.setText("Nama Siswa");
-        Ppembayaran.add(namasiswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 90, 20));
-        Ppembayaran.add(tNo_Transaki, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 130, -1));
-        Ppembayaran.add(tNisn, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 130, -1));
-        Ppembayaran.add(tNama_siswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 130, -1));
-        Ppembayaran.add(tKelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, 130, -1));
+        Ppembayaran.add(namasiswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 90, 20));
+        Ppembayaran.add(tNo_Transaki, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 130, -1));
+        Ppembayaran.add(tNisn, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 130, -1));
+        Ppembayaran.add(tNama_siswa, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 130, -1));
+        Ppembayaran.add(tKelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 130, -1));
         Ppembayaran.add(tId_Angkatan, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 150, 130, -1));
-        Ppembayaran.add(tnama_petugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 30, 130, -1));
-        Ppembayaran.add(tTanggal, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 130, -1));
-        Ppembayaran.add(lblidspp, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 150, 100, 20));
-        Ppembayaran.add(lle, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 30, 110, 20));
+        Ppembayaran.add(tnama_petugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 130, -1));
+        Ppembayaran.add(tTanggal, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 130, -1));
+        Ppembayaran.add(lblidspp, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 130, 20));
+        Ppembayaran.add(lle, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, 100, 20));
 
         tnama_siswastatus.setText("Status Pembayaran");
-        Ppembayaran.add(tnama_siswastatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 370, 110, 20));
+        Ppembayaran.add(tnama_siswastatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 450, 110, 20));
 
         tJumlahbayar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tJumlahbayarActionPerformed(evt);
             }
         });
-        Ppembayaran.add(tJumlahbayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 230, 100, -1));
+        Ppembayaran.add(tJumlahbayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 250, 100, -1));
 
         namasiswa1.setText("Kelas");
-        Ppembayaran.add(namasiswa1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 90, 20));
+        Ppembayaran.add(namasiswa1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 90, 20));
 
         namasiswa2.setText("Angkatan");
         Ppembayaran.add(namasiswa2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 90, 20));
 
-        namasiswa3.setText("Nama Petugas");
-        Ppembayaran.add(namasiswa3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, 90, 20));
-
         namasiswa4.setText("Tanggal");
-        Ppembayaran.add(namasiswa4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 90, 20));
+        Ppembayaran.add(namasiswa4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 90, 20));
 
         lnperbulan.setText("Nominal Perbulan");
-        Ppembayaran.add(lnperbulan, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 230, 100, 20));
+        Ppembayaran.add(lnperbulan, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 100, 20));
 
         tabelpembayaran.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -3195,10 +3122,10 @@ public class tampilan extends javax.swing.JFrame {
         ));
         jScrollPane16.setViewportView(tabelpembayaran);
 
-        Ppembayaran.add(jScrollPane16, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 310, 510, 240));
+        Ppembayaran.add(jScrollPane16, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 320, 510, 240));
 
         lsemes.setText("Semester");
-        Ppembayaran.add(lsemes, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 190, 90, 20));
+        Ppembayaran.add(lsemes, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 210, 90, 20));
 
         buttonGroup1.add(ganjil);
         ganjil.setText("Ganjil");
@@ -3207,41 +3134,40 @@ public class tampilan extends javax.swing.JFrame {
                 ganjilActionPerformed(evt);
             }
         });
-        Ppembayaran.add(ganjil, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 190, 60, -1));
+        Ppembayaran.add(ganjil, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 210, 60, -1));
 
         buttonGroup1.add(genap);
         genap.setText("Genap");
-        Ppembayaran.add(genap, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 190, -1, -1));
-
-        namasiswa5.setText("Id Petugas");
-        Ppembayaran.add(namasiswa5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 90, 20));
+        Ppembayaran.add(genap, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 210, -1, -1));
 
         tid_pet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tid_petActionPerformed(evt);
             }
         });
-        Ppembayaran.add(tid_pet, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 70, 130, -1));
-
-        llev.setText(" Level Petugas  :");
-        Ppembayaran.add(llev, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 90, -1));
+        Ppembayaran.add(tid_pet, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, 130, -1));
 
         lttg.setText("Total Tagihan");
-        Ppembayaran.add(lttg, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 90, 20));
+        Ppembayaran.add(lttg, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 90, 20));
 
         ttagihan.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 ttagihanKeyPressed(evt);
             }
         });
-        Ppembayaran.add(ttagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 130, -1));
+        Ppembayaran.add(ttagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 130, -1));
 
         lttg1.setText("Jumlah yang dibayarkan");
-        Ppembayaran.add(lttg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 130, 20));
+        Ppembayaran.add(lttg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, 130, 20));
 
         tjmlygdi.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 tjmlygdiFocusGained(evt);
+            }
+        });
+        tjmlygdi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tjmlygdiActionPerformed(evt);
             }
         });
         tjmlygdi.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3249,34 +3175,34 @@ public class tampilan extends javax.swing.JFrame {
                 tjmlygdiKeyPressed(evt);
             }
         });
-        Ppembayaran.add(tjmlygdi, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 130, -1));
+        Ppembayaran.add(tjmlygdi, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 540, 130, -1));
 
         lttg2.setText("Sisa Tagihan");
-        Ppembayaran.add(lttg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 330, 130, 20));
+        Ppembayaran.add(lttg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 390, 130, 20));
 
         tsisatagihan.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tsisatagihanKeyPressed(evt);
             }
         });
-        Ppembayaran.add(tsisatagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 130, -1));
+        Ppembayaran.add(tsisatagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 420, 130, -1));
 
         tstatuspem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tstatuspemActionPerformed(evt);
             }
         });
-        Ppembayaran.add(tstatuspem, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 370, 130, -1));
+        Ppembayaran.add(tstatuspem, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 480, 130, -1));
 
         tnama_siswastatus1.setText("Angsuran ke-");
-        Ppembayaran.add(tnama_siswastatus1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 420, 110, 20));
+        Ppembayaran.add(tnama_siswastatus1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 520, 110, 20));
 
         tangsuranke.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tangsurankeActionPerformed(evt);
             }
         });
-        Ppembayaran.add(tangsuranke, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 420, 130, -1));
+        Ppembayaran.add(tangsuranke, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 550, 130, -1));
 
         btnsimpantransaksi.setText("Simpan Transaksi");
         btnsimpantransaksi.addActionListener(new java.awt.event.ActionListener() {
@@ -3284,7 +3210,7 @@ public class tampilan extends javax.swing.JFrame {
                 btnsimpantransaksiActionPerformed(evt);
             }
         });
-        Ppembayaran.add(btnsimpantransaksi, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, -1, -1));
+        Ppembayaran.add(btnsimpantransaksi, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 590, -1, 30));
 
         tabeltagihan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -3304,26 +3230,74 @@ public class tampilan extends javax.swing.JFrame {
         });
         jScrollPane17.setViewportView(tabeltagihan);
 
-        Ppembayaran.add(jScrollPane17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, 520, 190));
+        Ppembayaran.add(jScrollPane17, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 600, 520, 100));
 
         tIDKE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tIDKEActionPerformed(evt);
             }
         });
-        Ppembayaran.add(tIDKE, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 110, 130, 20));
-        Ppembayaran.add(tid_tagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 130, -1));
+        Ppembayaran.add(tIDKE, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 120, 130, 20));
 
-        simpan_pembayaran.setText("jButton1");
+        tidtagihan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tidtagihanActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(tidtagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 130, -1));
+
+        simpan_pembayaran.setText("simpan pembayaran");
         simpan_pembayaran.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 simpan_pembayaranActionPerformed(evt);
             }
         });
-        Ppembayaran.add(simpan_pembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 480, -1, -1));
+        Ppembayaran.add(simpan_pembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 140, 30));
 
-        backpembayaran.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backbuatformpembayaran.png"))); // NOI18N
-        Ppembayaran.add(backpembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 930, -1));
+        tcaripembayaran.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tcaripembayaranKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tcaripembayaranKeyReleased(evt);
+            }
+        });
+        Ppembayaran.add(tcaripembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 280, 130, 30));
+
+        tcaritagihan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tcaritagihanKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tcaritagihanKeyReleased(evt);
+            }
+        });
+        Ppembayaran.add(tcaritagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 570, 130, 30));
+
+        btntampilnota.setText("Tampil Nota");
+        btntampilnota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btntampilnotaActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(btntampilnota, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 590, -1, -1));
+
+        btncetak.setText("Cetak nota");
+        btncetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncetakActionPerformed(evt);
+            }
+        });
+        Ppembayaran.add(btncetak, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 590, -1, -1));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        Ppembayaran.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
+
+        backpembayaran.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backbarupembayaran.png"))); // NOI18N
+        Ppembayaran.add(backpembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, -1));
 
         mainpanel.add(Ppembayaran, "card6");
 
@@ -3352,7 +3326,7 @@ public class tampilan extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(tabelkelas);
 
-        Pkelas.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 170, 790, 170));
+        Pkelas.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 790, 170));
 
         btampilkelas.setText("Tampil");
         btampilkelas.addActionListener(new java.awt.event.ActionListener() {
@@ -3360,31 +3334,34 @@ public class tampilan extends javax.swing.JFrame {
                 btampilkelasActionPerformed(evt);
             }
         });
-        Pkelas.add(btampilkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 620, -1, -1));
+        Pkelas.add(btampilkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 640, -1, -1));
 
+        beditkelas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-pencil-25.png"))); // NOI18N
         beditkelas.setText("Edit");
         beditkelas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 beditkelasActionPerformed(evt);
             }
         });
-        Pkelas.add(beditkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 610, 90, 30));
+        Pkelas.add(beditkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 530, 120, 30));
 
+        bhapuskelas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-remove-25.png"))); // NOI18N
         bhapuskelas.setText("Hapus");
         bhapuskelas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bhapuskelasActionPerformed(evt);
             }
         });
-        Pkelas.add(bhapuskelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 610, 80, 30));
+        Pkelas.add(bhapuskelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 580, 120, 30));
 
+        bsimpankelas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-save-30.png"))); // NOI18N
         bsimpankelas.setText("Simpan");
         bsimpankelas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bsimpankelasActionPerformed(evt);
             }
         });
-        Pkelas.add(bsimpankelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 610, 80, 30));
+        Pkelas.add(bsimpankelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 490, 120, 30));
 
         tidkelas.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -3396,7 +3373,7 @@ public class tampilan extends javax.swing.JFrame {
                 tidkelasActionPerformed(evt);
             }
         });
-        Pkelas.add(tidkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 470, 132, -1));
+        Pkelas.add(tidkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, 300, 30));
 
         tnamakelas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3408,23 +3385,26 @@ public class tampilan extends javax.swing.JFrame {
                 tnamakelasKeyReleased(evt);
             }
         });
-        Pkelas.add(tnamakelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 510, 132, -1));
+        Pkelas.add(tnamakelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 550, 300, 30));
 
         tkom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tkomActionPerformed(evt);
             }
         });
-        Pkelas.add(tkom, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 550, 132, -1));
+        Pkelas.add(tkom, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 640, 300, 30));
 
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel24.setText("Id Kelas");
-        Pkelas.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 470, 111, -1));
+        Pkelas.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 460, 111, -1));
 
+        jLabel25.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel25.setText("Nama Kelas");
-        Pkelas.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 510, 111, -1));
+        Pkelas.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 530, 111, -1));
 
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel26.setText("Kompetensi Keahlian");
-        Pkelas.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 550, -1, -1));
+        Pkelas.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 600, -1, -1));
 
         textcarikelas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3436,18 +3416,20 @@ public class tampilan extends javax.swing.JFrame {
                 textcarikelasKeyReleased(evt);
             }
         });
-        Pkelas.add(textcarikelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 200, 30));
+        Pkelas.add(textcarikelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 160, 200, 30));
 
+        bcarikelas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-search-26.png"))); // NOI18N
         bcarikelas.setText("Cari");
         bcarikelas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bcarikelasActionPerformed(evt);
             }
         });
-        Pkelas.add(bcarikelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 110, -1, -1));
+        Pkelas.add(bcarikelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 160, -1, -1));
 
         jLabel78.setBackground(new java.awt.Color(255, 255, 255, 0));
-        jLabel78.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backkelas.png"))); // NOI18N
+        jLabel78.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel78.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/kelas.png"))); // NOI18N
         jLabel78.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel78MouseClicked(evt);
@@ -3708,62 +3690,76 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_tkomActionPerformed
 
     private void bsimpankelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsimpankelasActionPerformed
-        try {
-            String sql = "INSERT INTO kelas VALUES ('" + tidkelas.getText()
-                    + "','" + tnamakelas.getText()
-                    + "','" + tkom.getText() + "')";
+        if (tidkelas.getText().isEmpty() || tnamakelas.getText().isEmpty() || tkom.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Mohon lengkapi semua kolom");
+//            jika lengkap maka lanjut
+        } else {
+            try {
+                String sql = "INSERT INTO kelas VALUES ('" + tidkelas.getText()
+                        + "','" + tnamakelas.getText()
+                        + "','" + tkom.getText() + "')";
 //            Connection con = (Connection) koneksi.getConnection();
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "Data Sudah Tersimpan");
-            tidkelas.setText("");
-            tnamakelas.setText("");
-            tkom.setText("");
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.execute();
+                JOptionPane.showMessageDialog(null, "Data Sudah Tersimpan");
+                tidkelas.setText("");
+                tnamakelas.setText("");
+                tkom.setText("");
 
-            DefaultTableModel model = (DefaultTableModel) tabelkelas.getModel();
-            model.setRowCount(0);
-            refreshkelas();
-            id_otomatis();
+                DefaultTableModel model = (DefaultTableModel) tabelkelas.getModel();
+                model.setRowCount(0);
+                refreshkelas();
+                id_otomatis();
 
-        } catch (Exception e) {
-            System.out.println("gagal memasukkan data" + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("gagal memasukkan data" + e.getMessage());
+            }
         }
-
     }//GEN-LAST:event_bsimpankelasActionPerformed
 
     private void bhapuskelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bhapuskelasActionPerformed
-        int p = JOptionPane.showConfirmDialog(null, "Apaakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
-        if (p == 0) {
-            try {
-                String sql = "DELETE FROM kelas WHERE Id_kelas ='" + tidkelas.getText() + "'";
-                PreparedStatement pst = con.prepareStatement(sql);
-                pst.execute();
-                JOptionPane.showMessageDialog(null, "Berhasil menghapus data");
+        if (tidkelas.getText().isEmpty() || tnamakelas.getText().isEmpty() || tkom.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "kolom tidak lengkap");
+//            jika lengkap maka lanjut
+        } else {
+            int p = JOptionPane.showConfirmDialog(null, "Apaakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
+            if (p == 0) {
+                try {
+                    String sql = "DELETE FROM kelas WHERE Id_kelas ='" + tidkelas.getText() + "'";
+                    PreparedStatement pst = con.prepareStatement(sql);
+                    pst.execute();
+                    JOptionPane.showMessageDialog(null, "Berhasil menghapus data");
 //            refresh();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Gagal menghapus" + e.getMessage());
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Gagal menghapus" + e.getMessage());
+                }
             }
         }
         resetFormkelas();
     }//GEN-LAST:event_bhapuskelasActionPerformed
 
     private void beditkelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beditkelasActionPerformed
-        try {
-            String sql = "UPDATE kelas SET Id_kelas ='" + tidkelas.getText()
-                    + "',nama_kelas ='" + tnamakelas.getText()
-                    + "',kompetensi_keahlian ='" + tkom.getText() + "' WHERE Id_kelas ='" + tidkelas.getText() + "'";
+        if (tidkelas.getText().isEmpty() || tnamakelas.getText().isEmpty() || tkom.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "kolom tidak lengkap");
+//            jika lengkap maka lanjut
+        } else {
+            try {
+                String sql = "UPDATE kelas SET Id_kelas ='" + tidkelas.getText()
+                        + "',nama_kelas ='" + tnamakelas.getText()
+                        + "',kompetensi_keahlian ='" + tkom.getText() + "' WHERE Id_kelas ='" + tidkelas.getText() + "'";
 //            Connection con = (Connection) koneksi.getConnection();
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.execute();
-            DefaultTableModel model = (DefaultTableModel) tabelkelas.getModel();
-            model.setRowCount(0);
-            refreshkelas();
-            JOptionPane.showMessageDialog(null, "Data Sudah di Update");
-            refreshkelas();
-            resetForm();
-        } catch (Exception e) {
-            System.out.println("gagal mengupdate data " + e.getMessage());
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.execute();
+                DefaultTableModel model = (DefaultTableModel) tabelkelas.getModel();
+                model.setRowCount(0);
+                refreshkelas();
+                JOptionPane.showMessageDialog(null, "Data Sudah di Update");
+                refreshkelas();
+                resetForm();
+            } catch (Exception e) {
+                System.out.println("gagal mengupdate data " + e.getMessage());
+                JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            }
         }
     }//GEN-LAST:event_beditkelasActionPerformed
 
@@ -3807,7 +3803,7 @@ public class tampilan extends javax.swing.JFrame {
         if (text.length() > 13) {
             JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 12.");
         }
-        
+
     }//GEN-LAST:event_tnamapetugasActionPerformed
 
     private void ttelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ttelpActionPerformed
@@ -3826,45 +3822,40 @@ public class tampilan extends javax.swing.JFrame {
         id_otomatispetu();
         String pilihanlevel = (String) boxlevel.getSelectedItem();
 
-        try {
-            String sql = "INSERT INTO petugas VALUES ('" + tidpetugas.getText()
-                    + "','" + tuserpetugas.getText()
-                    + "','" + tpasspetu.getText()
-                    + "','" + tnamapetugas.getText()
-                    + "','" + ttelp.getText()
-                    + "','" + pilihanlevel
-                    + "')";
+// cek apakah ada field yang kosong
+        if (tidpetugas.getText().isEmpty() || tuserpetugas.getText().isEmpty() || tpasspetu.getText().isEmpty()
+                || boxlevel.equals("pilih") || ttelp.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Mohon lengkapi semua field");
+//            jika lengkap maka lanjut
+        } else {
+            try {
+                String sql = "INSERT INTO petugas VALUES ('" + tidpetugas.getText()
+                        + "','" + tuserpetugas.getText()
+                        + "','" + tpasspetu.getText()
+                        + "','" + tnamapetugas.getText()
+                        + "','" + ttelp.getText()
+                        + "','" + pilihanlevel
+                        + "')";
 //            Connection con = (Connection) koneksi.getConnection();
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "Data Sudah Tersimpan");
-            tidpetugas.setText("");
-            tuserpetugas.setText("");
-            tpasspetu.setText("");
-            tnamapetugas.setText("");
-            ttelp.setText("");
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.execute();
+                JOptionPane.showMessageDialog(null, "Data Sudah Tersimpan");
+                tidpetugas.setText("");
+                tuserpetugas.setText("");
+                tpasspetu.setText("");
+                tnamapetugas.setText("");
+                ttelp.setText("");
 //            boxlevel.set
 
-            DefaultTableModel model = (DefaultTableModel) tabelpetugas.getModel();
-            model.setRowCount(0);
-            refreshpetugas();
+                DefaultTableModel model = (DefaultTableModel) tabelpetugas.getModel();
+                model.setRowCount(0);
+                refreshpetugas();
 
-        } catch (Exception e) {
-            System.out.println("gagal memasukkan data" + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("gagal memasukkan data" + e.getMessage());
+            }
         }
     }//GEN-LAST:event_bsimpanpetuActionPerformed
-
-    private void btampilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btampilActionPerformed
-        try {
-            String sql = "SELECT * FROM petugas WHERE Id_petugas ='" + tidpetugas.getText() + "'";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.execute();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        tablepetugas();
-//        hapus();
-    }//GEN-LAST:event_btampilActionPerformed
 
     private void tpasspetuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tpasspetuActionPerformed
         // TODO add your handling code here:
@@ -3973,7 +3964,7 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_tampidsppActionPerformed
 
     private void lihatdata2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lihatdata2ActionPerformed
-        
+
     }//GEN-LAST:event_lihatdata2ActionPerformed
 
     private void tidkelasFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tidkelasFocusLost
@@ -3988,26 +3979,33 @@ public class tampilan extends javax.swing.JFrame {
 
     private void beditpetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beditpetugasActionPerformed
         String pilihanlevel = (String) boxlevel.getSelectedItem();
-        try {
-            String sql = "UPDATE petugas SET Id_petugas ='" + tidpetugas.getText()
-                    + "',username ='" + tuserpetugas.getText()
-                    + "',password ='" + tpasspetu.getText()
-                    + "',nama_petugas ='" + tnamapetugas.getText()
-                    + "',no_tlppet ='" + ttelp.getText()
-                    + "',level ='" + pilihanlevel
-                    + "' WHERE Id_petugas ='" + tidpetugas.getText() + "'";
+        // cek apakah ada field yang kosong
+        if (tidpetugas.getText().isEmpty() || tuserpetugas.getText().isEmpty() || tpasspetu.getText().isEmpty()
+                || boxlevel.equals("pilih") || ttelp.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Mohon lengkapi semua kolom");
+//            jika lengkap maka lanjut
+        } else {
+            try {
+                String sql = "UPDATE petugas SET Id_petugas ='" + tidpetugas.getText()
+                        + "',username ='" + tuserpetugas.getText()
+                        + "',password ='" + tpasspetu.getText()
+                        + "',nama_petugas ='" + tnamapetugas.getText()
+                        + "',no_tlppet ='" + ttelp.getText()
+                        + "',level ='" + pilihanlevel
+                        + "' WHERE Id_petugas ='" + tidpetugas.getText() + "'";
 //            Connection con = (Connection) koneksi.getConnection();
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.execute();
-            DefaultTableModel model = (DefaultTableModel) tabelpetugas.getModel();
-            model.setRowCount(0);
-            refreshpetugas();
-            JOptionPane.showMessageDialog(null, "Data Sudah diUpdate");
-            refreshpetugas();
-            resetFormpetu();
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.execute();
+                DefaultTableModel model = (DefaultTableModel) tabelpetugas.getModel();
+                model.setRowCount(0);
+                refreshpetugas();
+                JOptionPane.showMessageDialog(null, "Data Sudah diUpdate");
+                refreshpetugas();
+                resetFormpetu();
 
-        } catch (Exception e) {
-            System.out.println("gagal mengupdate data" + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("gagal mengupdate data" + e.getMessage());
+            }
         }
     }//GEN-LAST:event_beditpetugasActionPerformed
 
@@ -4295,6 +4293,7 @@ public class tampilan extends javax.swing.JFrame {
         DefaultTableModel model = new DefaultTableModel();
         String tanggal = tahun + "/" + bulan + "/" + hari;
         tTanggal.setText(tanggal);
+        tTanggal.setEnabled(false);
         int i = tabelsiswapembayaran.rowAtPoint(evt.getPoint());
         String semesterberapa = tabelsiswapembayaran.getValueAt(i, 4).toString();
         tNisn.setText(tabelsiswapembayaran.getValueAt(i, 0).toString());
@@ -4305,9 +4304,10 @@ public class tampilan extends javax.swing.JFrame {
 //        buttonGroup1.setSelected(tabelsiswapembayaran.getValueAt(i, 4).toString());
         if (semesterberapa.equals("ganjil")) {
             genap.setSelected(true);
-
+            ganjil.setEnabled(false);
         } else {
             ganjil.setSelected(true);
+            genap.setEnabled(false);
         }
         try {
             String sql = "select siswa.*, spp.* from siswa INNER JOIN spp Using(id_spp) where nisn like '%" + tNisn.getText() + "%'";
@@ -4393,17 +4393,23 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelsiswamasterMouseClicked
 
     private void beditsppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beditsppActionPerformed
-        try {
-            String tahun = ttahun.getText();
-            String nominal = tnominal.getText();
+        if (tidspp.getText().isEmpty() || ttahun.getText().isEmpty() || tnominal.getText().isEmpty()
+                || totalnom.getText().isEmpty() || cgannep.equals("pilih")) {
+            JOptionPane.showMessageDialog(rootPane, "Mohon lengkapi semua kolom");
+//            jika lengkap maka lanjut
+        } else {
+            try {
+                String tahun = ttahun.getText();
+                String nominal = tnominal.getText();
 
-            String sql = "update spp set tahun_ajaran='" + tahun + "', nominal_perbulan='" + nominal + "', semester ='" + cgannep.getSelectedItem() + "', total_nominal_semester='" + totalnom.getText() + "' where id_spp='" + tidspp.getText() + "'";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.execute();
-            JOptionPane.showMessageDialog(this, "Data Berhasil Di Edit");
-        } catch (Exception e) {
-            System.out.println(e);
-            JOptionPane.showMessageDialog(this, "Data Gagal Di Edit");
+                String sql = "update spp set tahun_ajaran='" + tahun + "', nominal_perbulan='" + nominal + "', semester ='" + cgannep.getSelectedItem() + "', total_nominal_semester='" + totalnom.getText() + "' where id_spp='" + tidspp.getText() + "'";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.execute();
+                JOptionPane.showMessageDialog(this, "Data Berhasil Di Edit");
+            } catch (Exception e) {
+                System.out.println(e);
+                JOptionPane.showMessageDialog(this, "Data Gagal Di Edit");
+            }
         }
         resetForm();
         id_otomatisspp();
@@ -4441,35 +4447,48 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_bsimpansppActionPerformed
 
     private void bhapussppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bhapussppActionPerformed
-        int p = JOptionPane.showConfirmDialog(null, "Apaakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
-        if (p == 0) {
-            try {
-                String sql = "delete from spp where id_spp ='" + tabelspp.getValueAt(tabelspp.getSelectedRow(), 0) + "'";
-                PreparedStatement ps = con.prepareStatement(sql);
-                ps.execute();
-                JOptionPane.showMessageDialog(null, "berhasil");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "gagal");
+        if (tidspp.getText().isEmpty() || ttahun.getText().isEmpty() || tnominal.getText().isEmpty()
+                || totalnom.getText().isEmpty() || cgannep.equals("pilih")) {
+            JOptionPane.showMessageDialog(rootPane, "Mohon lengkapi semua kolom");
+//            jika lengkap maka lanjut
+        } else {
+            int p = JOptionPane.showConfirmDialog(null, "Apaakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
+            if (p == 0) {
+                try {
+                    String sql = "delete from spp where id_spp ='" + tabelspp.getValueAt(tabelspp.getSelectedRow(), 0) + "'";
+                    PreparedStatement ps = con.prepareStatement(sql);
+                    ps.execute();
+                    JOptionPane.showMessageDialog(null, "berhasil");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "gagal");
+                }
+                resetForm();
+                id_otomatisspp();
             }
-            resetForm();
-            id_otomatisspp();
         }
-
     }//GEN-LAST:event_bhapussppActionPerformed
 
     private void bhapuspetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bhapuspetugasActionPerformed
-        int p = JOptionPane.showConfirmDialog(null, "Apaakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
-        if (p == 0) {
-            try {
-                String sql = "DELETE FROM petugas WHERE Id_petugas ='" + tidpetugas.getText() + "'";
-                PreparedStatement pst = con.prepareStatement(sql);
-                pst.execute();
-                JOptionPane.showMessageDialog(null, "Berhasil menghapus data");
+
+        if (tidpetugas.getText().isEmpty() || tuserpetugas.getText().isEmpty() || tpasspetu.getText().isEmpty()
+                || boxlevel.equals("pilih") || ttelp.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Mohon lengkapi semua kolom");
+//            jika lengkap maka lanjut
+        } else {
+            int p = JOptionPane.showConfirmDialog(null, "Apaakah Anda ingin menghapus data ini ?", "Hapus", JOptionPane.YES_NO_OPTION);
+
+            if (p == 0) {
+                try {
+                    String sql = "DELETE FROM petugas WHERE Id_petugas ='" + tidpetugas.getText() + "'";
+                    PreparedStatement pst = con.prepareStatement(sql);
+                    pst.execute();
+                    JOptionPane.showMessageDialog(null, "Berhasil menghapus data");
 //            refresh();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Gagal menghapus" + e.getMessage());
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Gagal menghapus" + e.getMessage());
+                }
+                resetFormpetu();
             }
-            resetFormpetu();
         }
     }//GEN-LAST:event_bhapuspetugasActionPerformed
 
@@ -4504,12 +4523,18 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_caripetuKeyReleased
 
     private void tuserpetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tuserpetugasKeyPressed
-        String text = tuserpetugas.getText();
-        if (text.length() > 35) {
-            JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 35.");
-            String potongkarakter = text.substring(0, 13);
-            tuserpetugas.setText(potongkarakter);
+        String text = tuserpetugas.getText(); // mengambil inputan dari user
+        if (text.matches("[a-zA-Z]+")) { // melakukan validasi hanya huruf
+            if (text.length() > 35) { // memeriksa panjang karakter
+                JOptionPane.showMessageDialog(null, "Panjang karakter tidak boleh lebih dari 35.");
+                String potongkarakter = text.substring(0, 13);
+                tuserpetugas.setText(potongkarakter);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Input hanya boleh berisi huruf.");
+            tuserpetugas.setText("");
         }
+
     }//GEN-LAST:event_tuserpetugasKeyPressed
 
     private void ttahunKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ttahunKeyPressed
@@ -4766,12 +4791,13 @@ public class tampilan extends javax.swing.JFrame {
     private void btnsimpantransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsimpantransaksiActionPerformed
         String nisnsiswa = tNisn.getText();
         String namasiswa = tNama_siswa.getText();
-        String idspps = tJumlahbayar.getText();
+        String jumbay = tJumlahbayar.getText();
         String nKelas = tKelas.getText();
         String idkelas = tIDKE.getText();
         String IDSPP = lblidspp.getText();
         String tahunajaran = tId_Angkatan.getText();
-        String id_tagihan = tid_tagihan.getText();
+        String id_tagihan = tidtagihan.getText();
+        String idpem = tNo_Transaki.getText();
 
         String total_tagihan1 = ttagihan.getText();
         int jumlahbayarkan;
@@ -4793,7 +4819,8 @@ public class tampilan extends javax.swing.JFrame {
                     + total_tagihan1 + "','"
                     + sisa_tagihan + "','"
                     + angsuran_ke + "','"
-                    + status_bayar + "')";
+                    + status_bayar + "','"
+                    + idpem + "')";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.executeUpdate();
             tampiltabelrekapan();
@@ -4807,15 +4834,24 @@ public class tampilan extends javax.swing.JFrame {
     }//GEN-LAST:event_btnsimpantransaksiActionPerformed
 
     private void tjmlygdiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tjmlygdiKeyPressed
+
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
             int total, nominal, jumlah_bayar;
             nominal = Integer.parseInt(ttagihan.getText());
             jumlah_bayar = Integer.parseInt(tjmlygdi.getText());
-            total = nominal - jumlah_bayar;
+            if (jumlah_bayar > nominal) {
+                JOptionPane.showMessageDialog(null, " Uang yang dibayarkan lebih dari total yang harus dibayar!");
 
-            tsisatagihan.setText("" + total);
-            id_otomatistagihan();
-            tsisatagihan.requestFocus();
+            } else {
+
+                total = nominal - jumlah_bayar;
+
+                tsisatagihan.setText("" + total);
+                id_otomatistagihan();
+                tsisatagihan.requestFocus(true);
+            }
+
         }
     }//GEN-LAST:event_tjmlygdiKeyPressed
 
@@ -4832,13 +4868,16 @@ public class tampilan extends javax.swing.JFrame {
             if (sisa_tagihan == 0) {
                 tstatuspem.setText("Lunas");
                 ttagihan.setEnabled(false);
+                tangsuranke.requestFocus(true);
             } else {
                 if (sisa_tagihan < nominaltotaltagihan) {
                     tstatuspem.setText("Belum Lunas");
+                    tangsuranke.requestFocus(true);
                 }
             }
             sisa_tagihan = nominaltotaltagihan - jumlahdibayarkan;
             tsisatagihan.setText("" + sisa_tagihan);
+            tstatuspem.setEnabled(false);
         } else {
         }
     }//GEN-LAST:event_tsisatagihanKeyPressed
@@ -4918,8 +4957,157 @@ public class tampilan extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Anda bisa Melakukan Pembayaran");
             ttagihan.setEnabled(true);
+            tjmlygdi.requestFocus(true);
         }
     }//GEN-LAST:event_ttagihanKeyPressed
+
+    private void tcaripembayaranKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tcaripembayaranKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tcaripembayaranKeyReleased
+
+    private void tcaripembayaranKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tcaripembayaranKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String[] kolompembayaran2
+                    = {"ID PEMBAYARAN", "ID PETUGAS", "NISN", "ID KELAS", "TANGGAL BAYAR", "SEMSTER", "JUMLAH DI BAYAR", "ID SPP ", "SISA TAGIHAN"};
+
+            DefaultTableModel model = new DefaultTableModel(kolompembayaran2, 0);
+            tabelpembayaran.setModel(model);
+
+            try {
+                String sql = " select pembayaran.id_pembayaran, petugas.id_petugas,siswa.nisn,kelas.id_kelas,pembayaran.tgl_bayar,spp.semester,pembayaran.jumlah_bayar,spp.id_spp from pembayaran INNER JOIN kelas USING(id_kelas)INNER JOIN petugas USING(id_petugas) INNER JOIN  spp Using(id_spp)INNER JOIN siswa Using(nisn)where id_pembayaran like '%" + tcaripembayaran.getText() + "%'";
+
+                PreparedStatement ps = con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                rs = con.createStatement().executeQuery(sql);
+
+                while (rs.next()) {
+                    String idtrx = rs.getString("id_pembayaran");
+                    String idpt = rs.getString("id_petugas");
+                    String nisn = rs.getString("nisn");
+                    String idkls = rs.getString("id_kelas");
+                    String tgl = rs.getString("tgl_bayar");
+                    String sem = rs.getString("semester");
+                    String total = rs.getString("jumlah_bayar");
+                    String idsp = rs.getString("id_spp");
+
+                    String[] data = {idtrx, idpt, nisn, idkls, tgl, sem, total, idsp};
+                    model.addRow(data);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
+        }
+    }//GEN-LAST:event_tcaripembayaranKeyPressed
+
+    private void tcaritagihanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tcaritagihanKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String[] kolomtagihan
+                    = {"ID PEMBAYARAN", "ID PETUGAS", "NISN", "ID KELAS", "TANGGAL BAYAR", "SEMSTER", "JUMLAH DI BAYAR", "ID SPP ", "SISA TAGIHAN"};
+
+            DefaultTableModel model = new DefaultTableModel(kolomtagihan, 0);
+            tabeltagihan.setModel(model);
+
+            try {
+                String sql = " select tagihan.id_tagihan,tagihan.angsuran_ke,tagihan.status_bayar,tagihan.sisa_tagihan,pembayaran.id_pembayaran,siswa.nisn,siswa.nama,kelas.nama_kelas,spp.nominal_perbulan,pembayaran.jumlah_bayar,spp.Id_spp from tagihan INNER JOIN kelas USING(id_kelas)INNER JOIN spp Using(id_spp)"
+                        + "INNER JOIN siswa Using(nisn)INNER JOIN pembayaran Using(id_pembayaran)where id_tagihan like '%" + tcaritagihan.getText() + "%' ";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                rs = con.createStatement().executeQuery(sql);
+
+                while (rs.next()) {
+                    String idtagihan1 = rs.getString("id_tagihan");
+                    String nisn = rs.getString("nisn");
+                    String idtrx = rs.getString("id_pembayaran");
+                    String namasiswa = rs.getString("nama");
+                    String kls = rs.getString("nama_kelas");
+                    String idsp = rs.getString("id_spp");
+                    String nominal = rs.getString("nominal");
+                    String total = rs.getString("jumlah_bayar");
+                    String sisa = rs.getString("sisa_tagihan");
+                    String angsuran = rs.getString("angsuran_ke");
+                    String status = rs.getString("status_bayar");
+
+                    String[] data = {idtagihan1, nisn, idtrx, namasiswa, kls, idsp, nominal, total, sisa, angsuran, status};
+                    model.addRow(data);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
+        }
+    }//GEN-LAST:event_tcaritagihanKeyPressed
+
+    private void tcaritagihanKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tcaritagihanKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tcaritagihanKeyReleased
+
+    private void tnamapetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tnamapetugasKeyPressed
+
+
+    }//GEN-LAST:event_tnamapetugasKeyPressed
+
+    private void tidtagihanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tidtagihanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tidtagihanActionPerformed
+
+    private void tjmlygdiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tjmlygdiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tjmlygdiActionPerformed
+
+    private void btntampilnotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntampilnotaActionPerformed
+        Date obj = new Date();
+        String date = obj.toString();
+        jTextArea1.setText(jTextArea1.getText() + "************************************\n");
+        jTextArea1.setText(jTextArea1.getText() + "           NOTA PEMBAYARAN  \n ");
+        jTextArea1.setText(jTextArea1.getText() + "************************************\n");
+
+        jTextArea1.setEnabled(false);
+        jTextArea1.setText(jTextArea1.getText() + "\n" + date + "\n");
+        jTextArea1.setText(jTextArea1.getText() + "Nama Petugas  : " + tnama_petugas.getText() + "\n");
+        jTextArea1.setText(jTextArea1.getText() + "ID Pembayaran : " + tNo_Transaki.getText() + "\n");
+        //jTextArea1.setText("************************************************************************\n");
+        jTextArea1.setText(jTextArea1.getText() + "Nama Lengkap  : " + tNama_siswa.getText() + "\n");
+        jTextArea1.setText(jTextArea1.getText() + "NISN          : " + tNisn.getText() + "\n");
+        jTextArea1.setText(jTextArea1.getText() + "Kelas         : " + tKelas.getText() + "\n");
+        jTextArea1.setText(jTextArea1.getText() + "*********************************\n");
+
+        String semester;
+        if (ganjil.isSelected()) {
+            semester = "Ganjil";
+            jTextArea1.setText(jTextArea1.getText() + "Semester         : " + semester + "\n");
+        }
+        if (genap.isSelected()) {
+            semester = "Genap";
+            jTextArea1.setText(jTextArea1.getText() + "Semester         : " + semester + "\n");
+
+        }
+        jTextArea1.setText(jTextArea1.getText() + "Total Tagihan        : " + ttagihan.getText() + "\n");
+        jTextArea1.setText(jTextArea1.getText() + "Jumlah Bayar         : " + tjmlygdi.getText() + "\n");
+        jTextArea1.setText(jTextArea1.getText() + "Angsuran ke-         : " + tangsuranke.getText() + "\n");
+        jTextArea1.setText(jTextArea1.getText() + "Status Bayar         : " + tstatuspem.getText() + "\n");
+
+    }//GEN-LAST:event_btntampilnotaActionPerformed
+
+    private void btncetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncetakActionPerformed
+        boolean print;
+
+        try {
+            print = jTextArea1.print();
+            if (print) {
+
+                jTextArea1.print();
+
+            } else {
+                JOptionPane.showMessageDialog(null, "tidak bisa cetak");
+            }
+
+        } catch (PrinterException ex) {
+            Logger.getLogger(tampilan.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+    }//GEN-LAST:event_btncetakActionPerformed
 
     /**
      * @param args the command line arguments
@@ -4932,19 +5120,27 @@ public class tampilan extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("windows".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(tampilan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tampilan.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(tampilan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tampilan.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(tampilan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tampilan.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(tampilan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tampilan.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -5008,12 +5204,13 @@ public class tampilan extends javax.swing.JFrame {
     public javax.swing.JButton bsimpanspp1;
     public javax.swing.JLabel bspp;
     private javax.swing.JLabel bspp1;
-    private javax.swing.JButton btampil;
     private javax.swing.JButton btampilkelas;
     private javax.swing.JButton btampilkelas1;
+    private javax.swing.JButton btncetak;
     private javax.swing.JButton btneditsis;
     private javax.swing.JButton btnhapussis;
     private javax.swing.JButton btnsimpantransaksi;
+    private javax.swing.JButton btntampilnota;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField cari;
     private javax.swing.JTextField caridataspp;
@@ -5035,6 +5232,7 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -5050,7 +5248,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
@@ -5107,8 +5304,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
@@ -5131,6 +5326,7 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel41;
     private javax.swing.JPanel jPanel42;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
@@ -5147,6 +5343,7 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField6;
     private com.k33ptoo.components.KButton kButton4;
@@ -5160,7 +5357,6 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JLabel ljam;
     private javax.swing.JLabel ljam1;
     private javax.swing.JLabel lle;
-    private javax.swing.JLabel llev;
     private javax.swing.JLabel lnperbulan;
     private javax.swing.JLabel lsemes;
     private javax.swing.JLabel ltgl;
@@ -5173,9 +5369,7 @@ public class tampilan extends javax.swing.JFrame {
     private javax.swing.JLabel namasiswa;
     private javax.swing.JLabel namasiswa1;
     private javax.swing.JLabel namasiswa2;
-    private javax.swing.JLabel namasiswa3;
     private javax.swing.JLabel namasiswa4;
-    private javax.swing.JLabel namasiswa5;
     public javax.swing.JLabel namauser;
     public javax.swing.JLabel namauser1;
     private java.awt.Panel panel1;
@@ -5210,15 +5404,17 @@ public class tampilan extends javax.swing.JFrame {
     public javax.swing.JTextField tampilidkelas1;
     private javax.swing.JLabel tampilsiswa;
     private javax.swing.JTextField tangsuranke;
+    private javax.swing.JTextField tcaripembayaran;
+    private javax.swing.JTextField tcaritagihan;
     private javax.swing.JTextField textcarikelas;
     private javax.swing.JTextField tid_pet;
-    private javax.swing.JTextField tid_tagihan;
     private javax.swing.JTextField tidkelas;
     private javax.swing.JTextField tidkelas1;
     private javax.swing.JTextField tidpetugas;
     private javax.swing.JTextField tidpetugas1;
     private javax.swing.JTextField tidspp;
     private javax.swing.JTextField tidspp1;
+    private javax.swing.JTextField tidtagihan;
     private javax.swing.JTextField tjmlygdi;
     private javax.swing.JTextField tkom;
     private javax.swing.JTextField tkom1;
@@ -5419,7 +5615,7 @@ public class tampilan extends javax.swing.JFrame {
         tId_Angkatan.setText("");
         lblidspp.setText("");
         tJumlahbayar.setText("");
-        tid_tagihan.setText("");
+        tidtagihan.setText("");
         ttagihan.setText("");
         tjmlygdi.setText("");
         tsisatagihan.setText("");

@@ -48,6 +48,7 @@ public class loginbaru extends javax.swing.JFrame {
         salahuser = new javax.swing.JLabel();
         simpan = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        cbox = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -71,6 +72,7 @@ public class loginbaru extends javax.swing.JFrame {
 
         tpass.setBackground(new java.awt.Color(255,255,255,0));
         tpass.setBorder(null);
+        tpass.setEchoChar('\u25cf');
         tpass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tpassActionPerformed(evt);
@@ -84,7 +86,7 @@ public class loginbaru extends javax.swing.JFrame {
                 salahpassMouseClicked(evt);
             }
         });
-        getContentPane().add(salahpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 170, 20));
+        getContentPane().add(salahpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 180, 30));
 
         jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Adhwa\\Downloads\\icons8-close-window-30.png")); // NOI18N
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -100,7 +102,7 @@ public class loginbaru extends javax.swing.JFrame {
                 salahuserMouseClicked(evt);
             }
         });
-        getContentPane().add(salahuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 160, 20));
+        getContentPane().add(salahuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, 170, 30));
 
         simpan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         simpan.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -118,6 +120,15 @@ public class loginbaru extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+
+        cbox.setForeground(new java.awt.Color(255, 255, 255));
+        cbox.setText("Show Password");
+        cbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboxActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/background form login.png"))); // NOI18N
         jLabel1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -156,7 +167,7 @@ public class loginbaru extends javax.swing.JFrame {
     }//GEN-LAST:event_salahpassMouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void salahuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_salahuserMouseClicked
@@ -165,6 +176,7 @@ public class loginbaru extends javax.swing.JFrame {
 
     private void simpanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_simpanMouseClicked
         if (tuse.getText().trim().isEmpty() || tpass.getText().trim().isEmpty()) {
+
 //            JOptionPane.showMessageDialog(null, "masih ada kolom yang kosong bestiee");
             salahuser.setText("username kosong");
             salahpass.setText("password kosong");
@@ -179,17 +191,29 @@ public class loginbaru extends javax.swing.JFrame {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 //                new tampilan_siswa().setVisible(true);
+//                String id = rs.getString("nisn");
+//                String nis = rs.getString("nis");
+//                String nama = rs.getString("nama");
+//                String levelpet = rs.getString("level");
+//
+//                //set user data session
+//                userSession.set_id(id);
+//                userSession.set_username(nis);
+//                userSession.set_nama(nama);
+//                userSession.set_level(levelpet);
                 this.dispose();
                 tampilan_siswa menu1 = new tampilan_siswa();
                 menu1.namausersis.setText("Selamat Datang " + rs.getString(3) + "!!!");
-                menu1.tampilnis.setText(rs.getString(1));
+                menu1.tampilnisn.setText(rs.getString(0));
                 menu1.tampilnama1.setText(rs.getString(3));
                 menu1.tampilid.setText(rs.getString(4));
+//                menu1.tampiltabelhistoripembayaransiswa();
 
                 menu1.setVisible(true);
 
             } else {
                 JOptionPane.showMessageDialog(rootPane, "User Tidak Ditemukan");
+                JOptionPane.showMessageDialog(rootPane, ERROR);
                 tuse.setText("");
                 tpass.setText("");
             }
@@ -210,6 +234,14 @@ public class loginbaru extends javax.swing.JFrame {
         new tampilan_awal().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void cboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxActionPerformed
+        if (cbox.isSelected()) {
+            tpass.setEchoChar((char) 0);
+        } else {
+            tpass.setEchoChar('\u25cf');
+        }
+    }//GEN-LAST:event_cboxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -247,6 +279,7 @@ public class loginbaru extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox cbox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -254,6 +287,6 @@ public class loginbaru extends javax.swing.JFrame {
     private javax.swing.JLabel salahuser;
     private javax.swing.JLabel simpan;
     private javax.swing.JPasswordField tpass;
-    private javax.swing.JTextField tuse;
+    public javax.swing.JTextField tuse;
     // End of variables declaration//GEN-END:variables
 }
