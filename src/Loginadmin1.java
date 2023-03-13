@@ -87,6 +87,11 @@ public class Loginadmin1 extends javax.swing.JFrame {
                 tombolMouseClicked(evt);
             }
         });
+        tombol.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tombolKeyPressed(evt);
+            }
+        });
         getContentPane().add(tombol, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, 160, 30));
 
         asli.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -170,6 +175,11 @@ public class Loginadmin1 extends javax.swing.JFrame {
         clevel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clevelActionPerformed(evt);
+            }
+        });
+        clevel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                clevelKeyPressed(evt);
             }
         });
         getContentPane().add(clevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 180, -1));
@@ -318,10 +328,10 @@ public class Loginadmin1 extends javax.swing.JFrame {
     private void tuser1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tuser1FocusLost
         if (tuser1.getText().equals("")) {
             tuser1.setText("enter username");
-        }else if(tuser1.getText().equals("username kosong")){
+        } else if (tuser1.getText().equals("username kosong")) {
             tuser1.setText("");
         }
-            
+
     }//GEN-LAST:event_tuser1FocusLost
 
     private void hoverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hoverMouseClicked
@@ -361,9 +371,9 @@ public class Loginadmin1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseExited
 
     private void tpassFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tpassFocusGained
-//        if (tpass.getText().equals("masukan password")) {
-//            tpass.setText("");
-//        }
+        if (tpass.getText().equals("masukan password")) {
+            tpass.setText("");
+        }
     }//GEN-LAST:event_tpassFocusGained
 
     private void clevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clevelActionPerformed
@@ -389,6 +399,76 @@ public class Loginadmin1 extends javax.swing.JFrame {
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         new gantipass().setVisible(true);
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void tombolKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tombolKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tombolKeyPressed
+
+    private void clevelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_clevelKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+//            clevel.requestFocus();
+            String level = clevel.getSelectedItem().toString();
+
+            if (tuser1.getText().trim().isEmpty() || tpass.getText().trim().isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "masih ada kolom yang kosong bestiee");
+                tuser1.setText("username kosong");
+                tpass.setText("password kosong");
+
+            } else if (tuser1.getText().trim().isEmpty()) {
+                tuser1.setText("username kosong");
+            } else if (tpass.getText().trim().isEmpty()) {
+                tpass.setText("password kosong");
+            }
+            try {
+
+                String sql = "SELECT * FROM petugas WHERE username ='" + tuser1.getText() + "' and password='" + tpass.getText() + "' and level='" + level + "';";
+
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    String id = rs.getString("id_petugas");
+                    String username = rs.getString("username");
+                    String nama = rs.getString("nama_petugas");
+                    String levelpet = rs.getString("level");
+
+                    //set user data session
+                    userSession.set_id(id);
+                    userSession.set_username(username);
+                    userSession.set_nama(nama);
+                    userSession.set_level(levelpet);
+                    if (levelpet.equals("admin")) {
+                        tampilan menu = new tampilan();
+//                    menu.siswa.setEnabled( false);
+                        menu.greating.setText("Selamat Datang Admin Ku  " + rs.getString(4));
+
+                        menu.setVisible(true);
+                        this.dispose();
+
+//                    menu.namauser.setText(rs.getString(2));
+                    } else if (levelpet.equals("petugas")) {
+                        tampilan menu1 = new tampilan();
+                        menu1.bpetugas.setVisible(false);
+                        menu1.bspp.setVisible(false);
+                        menu1.bkelas.setVisible(false);
+                        menu1.siswa.setVisible(false);
+
+                        menu1.bsimpanspp.setVisible(false);
+                        menu1.beditspp.setVisible(false);
+                        menu1.bhapusspp.setVisible(false);
+                        menu1.greating.setText("Halooo " + rs.getString(2));
+                        menu1.setVisible(true);
+                        this.dispose();
+                    }
+                } else if (!rs.next()) {
+                    JOptionPane.showMessageDialog(rootPane, "Login Gagal", "Pesan", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+            } catch (SQLException ex) {
+                System.out.println("User Tidak ditemukan");
+
+            }
+        }
+    }//GEN-LAST:event_clevelKeyPressed
 
     /**
      * @param args the command line arguments

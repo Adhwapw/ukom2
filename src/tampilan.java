@@ -1,10 +1,15 @@
 
+import com.mysql.cj.jdbc.Driver;
 import java.awt.Color;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -23,6 +29,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -39,7 +54,7 @@ public class tampilan extends javax.swing.JFrame {
      */
     public JTable tabekelas2 = new javax.swing.JTable();
     public JTable tabelsppsen = new javax.swing.JTable();
-    private Connection con = new koneksi().connect();
+    public Connection con = new koneksi().connect();
     Calendar kalender = new GregorianCalendar();
 
 //    UserSession
@@ -337,7 +352,7 @@ public class tampilan extends javax.swing.JFrame {
                 String tahun = rs.getString("tahun_ajaran");
                 String nominal = rs.getString("nominal_perbulan");
                 String semester = rs.getString("semester");
-                String total = rs.getString("total_nominal_semester");
+                String total = rs.getString("total_bayar");
 
                 String[] data = {nisn, nama, kelas, tahun, nominal, semester, total};
                 model.addRow(data);
@@ -827,6 +842,7 @@ public class tampilan extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         textcarikelas = new javax.swing.JTextField();
         bcarikelas = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jLabel78 = new javax.swing.JLabel();
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -3297,6 +3313,11 @@ public class tampilan extends javax.swing.JFrame {
         Ppembayaran.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
 
         backpembayaran.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/backbarupembayaran.png"))); // NOI18N
+        backpembayaran.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backpembayaranMouseClicked(evt);
+            }
+        });
         Ppembayaran.add(backpembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, -1));
 
         mainpanel.add(Ppembayaran, "card6");
@@ -3334,7 +3355,7 @@ public class tampilan extends javax.swing.JFrame {
                 btampilkelasActionPerformed(evt);
             }
         });
-        Pkelas.add(btampilkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 640, -1, -1));
+        Pkelas.add(btampilkelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 660, -1, -1));
 
         beditkelas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto/icons8-pencil-25.png"))); // NOI18N
         beditkelas.setText("Edit");
@@ -3426,6 +3447,14 @@ public class tampilan extends javax.swing.JFrame {
             }
         });
         Pkelas.add(bcarikelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 160, -1, -1));
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        Pkelas.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 620, 120, -1));
 
         jLabel78.setBackground(new java.awt.Color(255, 255, 255, 0));
         jLabel78.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -5109,6 +5138,38 @@ public class tampilan extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btncetakActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String jdbc_driver = "com.mysql.cj.jdbc.Driver";
+        String user = "root";
+        String pass = "";
+        String url = "jdbc:mysql://localhost:3306/db_spp2_copy";
+        File reportFile = new File(".");
+        String dirr = "";
+
+        try {
+            Class.forName(jdbc_driver);
+            Connection conn = (Connection) DriverManager.getConnection(url, user, pass);
+            Statement stat = conn.createStatement();
+            String sql = "SELECT * FROM kelas";
+            dirr = reportFile.getCanonicalPath() + "/src/report/";
+            JasperDesign design = JRXmlLoader.load(dirr + "kelas.jrxml");
+            JasperReport jr = JasperCompileManager.compileReport(design);
+            ResultSet rs = stat.executeQuery(sql);
+            JRResultSetDataSource rsDataSource = new JRResultSetDataSource(rs);
+            JasperPrint jp = JasperFillManager.fillReport(jr,new HashMap(), rsDataSource);
+            JasperViewer.viewReport(jp, false);
+        } catch (ClassNotFoundException | SQLException | IOException |JRException  ex ) {
+            JOptionPane.showMessageDialog(null, "\nGagal Mencetak\n"+ex,
+                    "Kesalahan",JOptionPane.ERROR_MESSAGE);
+
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void backpembayaranMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backpembayaranMouseClicked
+        refresh_formbayar();
+    }//GEN-LAST:event_backpembayaranMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -5227,6 +5288,7 @@ public class tampilan extends javax.swing.JFrame {
     public javax.swing.JLabel greating;
     public javax.swing.JLabel greating1;
     private javax.swing.JLabel hover;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox3;
@@ -5676,6 +5738,23 @@ public class tampilan extends javax.swing.JFrame {
         }
     }
 
+//    public static Connection getConnection() {
+//        Connection connection = null;
+//        String driver = "com.mysql.jdbc.Driver";
+//        String url = "jdbc:mysql://localhost:3306/db_belajar"; //ganti dengan database mu
+//        String user = "root";
+//        String password = "";
+//        if (connection == null) {
+//            try {
+//                Class.forName(driver);
+//                connection = DriverManager(url, user, password);
+//            } catch (ClassNotFoundException | SQLException error) {
+//                System.exit(0);
+//            }
+//
+//        }
+//        return connection;
+//    }
     public void tampiltabelrekapan() {
         String[] kolomrekapan2
                 = {"ID REKAPAN", "NISN", "NAMA", "ID KELAS", "NAMA KELAS", "ID SPP", "NOMINAL", "JUMLAH BAYAR", "SISA TAGIHAN", "ANGSURAN KE", "STATUS PEMBAYARAN"};

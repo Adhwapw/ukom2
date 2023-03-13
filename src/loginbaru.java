@@ -184,44 +184,57 @@ public class loginbaru extends javax.swing.JFrame {
         } else if (tuse.getText().trim().isEmpty()) {
             salahuser.setText("username kosong");
         }
-        try {
-            String sql = "Select * from siswa where nisn ='" + tuse.getText() + "' and nis='" + tpass.getText() + "';";
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-//                new tampilan_siswa().setVisible(true);
-//                String id = rs.getString("nisn");
-//                String nis = rs.getString("nis");
-//                String nama = rs.getString("nama");
-//                String levelpet = rs.getString("level");
+//        try {
+//            String sql = "Select * from siswa where nisn ='" + tuse.getText() + "' and nis='" + tpass.getText() + "';";
 //
-//                //set user data session
-//                userSession.set_id(id);
-//                userSession.set_username(nis);
-//                userSession.set_nama(nama);
-//                userSession.set_level(levelpet);
+//            PreparedStatement ps = conn.prepareStatement(sql);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                this.dispose();
+//                tampilan_siswa menu1 = new tampilan_siswa();
+//                menu1.namausersis.setText("Selamat Datang " + rs.getString(3) + "!!!");
+//                menu1.tampilnisn.setText(rs.getString(0));
+//                menu1.tampilnama1.setText(rs.getString(3));
+//                menu1.tampilid.setText(rs.getString(4));
+////                menu1.tampiltabelhistoripembayaransiswa();
+//
+//                menu1.setVisible(true);
+//
+//            } else {
+//                JOptionPane.showMessageDialog(rootPane, "User Tidak Ditemukan" );
+//                JOptionPane.showMessageDialog(rootPane, ERROR);
+//                tuse.setText("");
+//                tpass.setText("");
+//            }
+//
+//        } catch (SQLException ex) {
+//            System.out.println("User Tidak ditemukan" +ex );
+//
+//        }
+        try {
+            String sql = "SELECT * FROM siswa WHERE nisn = ? AND nis = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, tuse.getText());
+            ps.setString(2, tpass.getText());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
                 this.dispose();
                 tampilan_siswa menu1 = new tampilan_siswa();
                 menu1.namausersis.setText("Selamat Datang " + rs.getString(3) + "!!!");
-                menu1.tampilnisn.setText(rs.getString(0));
+                menu1.tampilnisn.setText(rs.getString(1));
                 menu1.tampilnama1.setText(rs.getString(3));
                 menu1.tampilid.setText(rs.getString(4));
-//                menu1.tampiltabelhistoripembayaransiswa();
-
                 menu1.setVisible(true);
-
             } else {
                 JOptionPane.showMessageDialog(rootPane, "User Tidak Ditemukan");
-                JOptionPane.showMessageDialog(rootPane, ERROR);
                 tuse.setText("");
                 tpass.setText("");
             }
-
         } catch (SQLException ex) {
-            System.out.println("User Tidak ditemukan");
-
+            System.out.println("User Tidak ditemukan" + ex);
         }
+
 
     }//GEN-LAST:event_simpanMouseClicked
 
